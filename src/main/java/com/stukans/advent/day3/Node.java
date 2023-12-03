@@ -48,7 +48,7 @@ public class Node {
                         } else {
                             String traverseLeft = traverse(input, x, y, true);
                             String traverseRight = traverse(input, x, y, false);
-                            if (traverseRight.equals(traverseLeft) && traverseLeft.length() == 1 && traverseRight.length() == 1) {
+                            if (traverseRight.equals(traverseLeft) && traverseLeft.length() == 1) {
                                 foundNumbers.add(Character.digit(ch, 10));
                             } else {
                                 if (traverseRight.length() == 1 && traverseLeft.length() > 1) {

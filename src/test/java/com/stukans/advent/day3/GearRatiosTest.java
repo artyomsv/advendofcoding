@@ -256,7 +256,7 @@ class GearRatiosTest {
     }
 
     @Test
-    void testAsterixGears() throws IOException {
+    void testAsterixGears() {
         char[][] array = new char[][]{
                 "467..114..".toCharArray(),
                 "...*......".toCharArray(),
