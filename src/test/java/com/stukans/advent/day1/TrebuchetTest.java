@@ -8,10 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -76,15 +76,17 @@ public class TrebuchetTest {
 
     @Test
     void testNoReplacement() throws IOException {
-        URL url = TrebuchetTest.class.getResource("/puzzle1/data.txt");
-        List<String> input = Files.readAllLines(Path.of(url.getPath()));
+        URL url = this.getClass().getResource("/puzzle1/data.txt");
+        String path = url.getFile();
+        List<String> input = Files.readAllLines(new File(path).toPath());
         System.out.println("Part1: " + new Trebuchet().solve(input, false));
     }
 
     @Test
     void testWithReplacement() throws IOException {
-        URL url = TrebuchetTest.class.getResource("/puzzle1/data.txt");
-        List<String> input = Files.readAllLines(Path.of(url.getPath()));
+        URL url = this.getClass().getResource("/puzzle1/data.txt");
+        String path = url.getFile();
+        List<String> input = Files.readAllLines(new File(path).toPath());
         System.out.println("Part2: " + new Trebuchet().solve(input, true));
     }
 
