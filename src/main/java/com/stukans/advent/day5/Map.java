@@ -1,5 +1,6 @@
 package com.stukans.advent.day5;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class Map {
@@ -12,8 +13,36 @@ public class Map {
         this.lines = lines;
     }
 
-    public int calculate(Integer seed) {
-        return 0;
+    public long calculate(Long seed) {
+        for (MapLine line : lines) {
+            long location = line.location(seed);
+            if (location != -1) {
+                return location;
+            }
+        }
+        return seed;
+    }
+
+    public long reverseCalculate(Long location) {
+        for (MapLine line : lines) {
+            long seed = line.seed(location);
+            if (seed != location) {
+                return seed;
+            }
+        }
+        return location;
+    }
+
+    public void mapping() {
+        lines.stream().sorted(Comparator.comparing(mapLine -> mapLine.destinationRangeStart))
+                .map(MapLine::pairs)
+                .flatMap(List::stream)
+                .forEach(System.out::println);
+    }
+
+    public List<MapLine> stream() {
+        return lines.stream().sorted(Comparator.comparing(mapLine -> mapLine.destinationRangeStart))
+                .toList();
     }
 
 }

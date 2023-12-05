@@ -13,17 +13,31 @@ import java.util.Objects;
 class SeedFertilizerTest {
 
     @Test
-    void test() throws IOException {
+    void example() throws IOException {
+        URL url = SeedFertilizerTest.class.getResource("/puzzle5/short.txt");
+        String path = Objects.requireNonNull(url).getFile();
+        List<String> input = Files.readAllLines(new File(path).toPath());
+        long result1 = new SeedFertilizer().part1(input);
+        System.out.println("Part1: " + result1);
+        Assertions.assertEquals(35, result1);
+
+        long result2 = new SeedFertilizer().part2(input);
+        System.out.println("Part2: " + result2);
+        Assertions.assertEquals(46, result2);
+    }
+
+    @Test
+    void real() throws IOException {
         URL url = SeedFertilizerTest.class.getResource("/puzzle5/data.txt");
         String path = Objects.requireNonNull(url).getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
-        int result = new SeedFertilizer().part1(input);
+        long result = new SeedFertilizer().part1(input);
         System.out.println("Part1: " + result);
-        Assertions.assertEquals(25010, result);
+        Assertions.assertEquals(403695602, result);
 
-        int result2 = new SeedFertilizer().part2(input);
+        long result2 = new SeedFertilizer().part2(input);
         System.out.println("Part2: " + result2);
-        Assertions.assertEquals(9924412, result2);
+        Assertions.assertEquals(219529182, result2);
     }
 
 
