@@ -1,7 +1,6 @@
 package com.stukans.advent.day5;
 
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.LongStream;
 
 public class IncrementalSeedProvider implements SeedProvider {
 
@@ -23,16 +22,6 @@ public class IncrementalSeedProvider implements SeedProvider {
     @Override
     public boolean hasNext() {
         return current.longValue() <= end;
-    }
-
-    @Override
-    public long size() {
-        return end - start;
-    }
-
-    @Override
-    public LongStream stream() {
-        return LongStream.range(start, end);
     }
 
     @Override
