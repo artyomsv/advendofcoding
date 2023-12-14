@@ -19,7 +19,17 @@ class PointOfIncidenceTest {
         return Stream.of(
                 Arguments.of("/puzzle13/short1.txt", 405, 1)
                 , Arguments.of("/puzzle13/short2.txt", 8, 1)
-                , Arguments.of("/puzzle13/data.txt", 7633, 1)
+                , Arguments.of("/puzzle13/short3.txt", 1800, 1)
+                , Arguments.of("/puzzle13/short4.txt", 2, 1)
+                , Arguments.of("/puzzle13/short5.txt", 1, 1)
+                , Arguments.of("/puzzle13/short6.txt", 7, 1)
+                , Arguments.of("/puzzle13/short7.txt", 7, 1)
+                , Arguments.of("/puzzle13/short8.txt", 1, 1)
+                , Arguments.of("/puzzle13/short9.txt", 500, 1)
+                , Arguments.of("/puzzle13/short10.txt", 2, 1)
+                , Arguments.of("/puzzle13/short11.txt", 1, 1)
+                , Arguments.of("/puzzle13/short12.txt", 600, 1)
+                , Arguments.of("/puzzle13/data.txt", 34821, 1)
 
         );
     }

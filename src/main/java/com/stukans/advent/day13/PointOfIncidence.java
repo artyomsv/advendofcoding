@@ -1,6 +1,12 @@
 package com.stukans.advent.day13;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.OptionalInt;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +28,7 @@ public class PointOfIncidence {
         for (int i = 0; i < input.size(); i++) {
             String line = input.get(i);
             if (line.strip().isBlank()) {
-                blocks.add(new Block(blockLines, horizontalHashesPairs, horizontalHashes));
+                blocks.add(new Block(blockLines, filterOutPairs(horizontalHashesPairs, horizontalHashes), horizontalHashes));
                 prev = -1;
                 blockLines = new ArrayList<>();
                 horizontalHashesPairs = new ArrayList<>();
@@ -41,12 +47,41 @@ public class PointOfIncidence {
             index++;
         }
 
-        blocks.add(new Block(blockLines, horizontalHashesPairs, horizontalHashes));
+        blocks.add(new Block(blockLines, filterOutPairs(horizontalHashesPairs, horizontalHashes), horizontalHashes));
 
         return blocks.stream()
                 .map(Block::calc)
                 .reduce(Integer::sum)
                 .orElse(-1);
+    }
+
+    private static List<Pair> filterOutPairs(List<Pair> horizontalHashesPairs, List<Integer> horizontalHashes) {
+        List<Pair> filteredPairs = new ArrayList<>();
+        for (Pair pair : horizontalHashesPairs) {
+            if (pair.i1 == 0 || pair.i2 == horizontalHashes.size()) {
+                filteredPairs.add(pair);
+                continue;
+            }
+            boolean validPair = true;
+            int left = Integer.MAX_VALUE;
+            int right = Integer.MAX_VALUE;
+            for (int j1 = pair.i1, j2 = pair.i2; j1 >= 0 && j2 < horizontalHashes.size(); j1--, j2++) {
+                try {
+                    left = j1;
+                    right = j2;
+                    if (!horizontalHashes.get(j1).equals(horizontalHashes.get(j2))) {
+                        validPair = false;
+                        break;
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println(pair + " - " + j1 + "," + j2);
+                }
+            }
+            if (validPair && (left == 0 || right >= horizontalHashes.size() - 1)) {
+                filteredPairs.add(pair);
+            }
+        }
+        return filteredPairs;
     }
 
     private record Pair(int i1, int i2) {
@@ -72,6 +107,7 @@ public class PointOfIncidence {
             int prev = -1;
             int y = 0;
             int length = block.get(y).length();
+            List<Pair> pairs = new ArrayList<>();
             for (int x = 0; x < length; x++) {
                 StringBuilder builder = new StringBuilder();
                 for (y = 0; y < block.size(); y++) {
@@ -81,14 +117,16 @@ public class PointOfIncidence {
                 int hash = Objects.hash(line);
                 verticalHashes.add(hash);
                 if (prev == hash) {
-                    verticalHashesPairs.add(new Pair(x - 1, x));
+                    pairs.add(new Pair(x - 1, x));
                 }
                 prev = hash;
             }
+
+            this.verticalHashesPairs.addAll(filterOutPairs(pairs, verticalHashes));
         }
 
         private int calc() {
-            System.out.println();
+            /*System.out.println();
             System.out.print("  ");
             for (int i = 1; i < block.get(0).length() + 1; i++) {
                 System.out.print(i < 10 ? " " : i / 10);
@@ -98,14 +136,15 @@ public class PointOfIncidence {
             for (int i = 1; i < block.get(0).length() + 1; i++) {
                 System.out.print(i < 10 ? i : i % 10);
             }
-            System.out.println();
+            System.out.println();*/
             Set<Integer> h = horizontalHashesPairs.stream().flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
             Set<Integer> v = verticalHashesPairs.stream().flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
 
             for (int i = 0; i < block.size(); i++) {
-                System.out.printf("%2d", i + 1);
+                //System.out.printf("%2d", i + 1);
                 for (int j = 0; j < block.get(i).length(); j++) {
-                    char c = block.get(i).charAt(j) == '.' ? '█' : '#';
+                    char c = block.get(i).charAt(j) == '.' ? '.' : '#';
+//                    char c = block.get(i).charAt(j) == '.' ? '█' : '#';
 //                    char c = '█';
                     if (h.contains(i) && v.contains(j)) {
                         System.out.printf("%s%s%s", ANSI_PURPLE, c, ANSI_RESET);
@@ -118,11 +157,7 @@ public class PointOfIncidence {
                     }
                 }
                 System.out.println();
-//                if (h.contains(i)) {
-//                    System.out.printf("%s%2d%s%s\n", ANSI_RED, i + 1, block.get(i), ANSI_RESET);
-//                } else {
-//                    System.out.printf("%2d%s\n", i + 1, block.get(i));
-//                }
+
             }
 
             Map<Integer, Pair> vertical = calcReflection(verticalHashesPairs, verticalHashes);
@@ -138,11 +173,13 @@ public class PointOfIncidence {
                 Pair pair = vertical.get(vert);
                 int result = pair.i1 + 1;
                 System.out.println("result: " + result);
+                System.out.println();
                 return result;
             } else {
                 Pair pair = horizontal.get(horiz);
                 int result = (pair.i1 + 1) * 100;
                 System.out.println("result: " + result);
+                System.out.println();
                 return result;
             }
         }
