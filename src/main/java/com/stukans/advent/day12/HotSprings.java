@@ -1,6 +1,6 @@
 package com.stukans.advent.day12;
 
-import com.stukans.advent.Utils;
+import com.stukans.advent.Puzzle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 import static com.stukans.advent.Utils.unfold;
 
-public class HotSprings {
+public class HotSprings extends Puzzle {
 
     public long solve(List<String> input, int unfolding) {
         long result = 0;
@@ -177,7 +177,7 @@ public class HotSprings {
     }
 
     private Integer[] verify(Character[] input) {
-        return verify(new String(Utils.convert(input)));
+        return verify(new String(convert(input)));
     }
 
     private Integer[] verify(char[] input) {

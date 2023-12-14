@@ -1,10 +1,10 @@
 package com.stukans.advent.day11;
 
-import com.stukans.advent.Utils;
+import com.stukans.advent.Puzzle;
 
 import java.util.*;
 
-public class CosmicExpansion {
+public class CosmicExpansion extends Puzzle {
 
     public long solve(List<String> input, int shift) {
         Character[][] universe = convertToMatrix(input);
@@ -18,10 +18,10 @@ public class CosmicExpansion {
         return totalDistance;
     }
 
-    private static Character[][] convertToMatrix(List<String> input) {
+    private Character[][] convertToMatrix(List<String> input) {
         Character[][] universe = new Character[input.size()][];
         for (int i = 0; i < input.size(); i++) {
-            universe[i] = Utils.convert(input.get(i).strip().toCharArray());
+            universe[i] = convert(input.get(i).strip().toCharArray());
         }
         return universe;
     }
@@ -80,9 +80,9 @@ public class CosmicExpansion {
         return totalDistance;
     }
 
-    private static List<Galaxy> identifyGalaxies(Character[][] universe) {
+    private List<Galaxy> identifyGalaxies(Character[][] universe) {
         for (int i = 0; i < universe.length; i++) {
-            System.out.println(new String(Utils.convert(universe[i])));
+            System.out.println(new String(convert(universe[i])));
         }
 
 

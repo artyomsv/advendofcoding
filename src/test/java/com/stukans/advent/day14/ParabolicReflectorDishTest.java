@@ -17,19 +17,21 @@ class ParabolicReflectorDishTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle14/short1.txt", 136, 1)
-                , Arguments.of("/puzzle14/data.txt", 106648, 1)
+                Arguments.of("/puzzle14/short1.txt", 136, -1),
+                Arguments.of("/puzzle14/short1.txt", 136, 100)
+                , Arguments.of("/puzzle14/data.txt", 106648, -1)
+                , Arguments.of("/puzzle14/data.txt", 106648, 5000)
 
         );
     }
 
     @ParameterizedTest
     @MethodSource("games")
-    void example(String file, long output) throws IOException {
+    void example(String file, long output, int cycles) throws IOException {
         URL url = ParabolicReflectorDishTest.class.getResource(file);
         String path = Objects.requireNonNull(url).getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
-        long result = new ParabolicReflectorDish().solve(input);
+        long result = new ParabolicReflectorDish().solve(input, cycles);
         Assertions.assertEquals(output, result);
     }
 
