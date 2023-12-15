@@ -2,8 +2,12 @@ package com.stukans.advent.day15;
 
 import com.stukans.advent.Puzzle;
 
-import java.util.*;
-import java.util.function.UnaryOperator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 public class LensLibrary extends Puzzle<Long> {
 
@@ -25,7 +29,7 @@ public class LensLibrary extends Puzzle<Long> {
 
     @Override
     public long solve(List<String> input, Long aLong) {
-        Map<Long, List<Lens>> map = new HashMap<>();
+        Map<Long, List<Lens>> map = new TreeMap<>();
 
         for (String string : input) {
             StringTokenizer tokenizer = new StringTokenizer(string, ",");
@@ -42,14 +46,9 @@ public class LensLibrary extends Puzzle<Long> {
                     long hash = hash(label);
                     List<Lens> list = map.getOrDefault(hash, new LinkedList<>());
 
-                    Lens lens = new Lens(label, focalLength);
+                    final Lens lens = new Lens(label, focalLength);
                     if (list.contains(lens)) {
-                        list.replaceAll(new UnaryOperator<Lens>() {
-                            @Override
-                            public Lens apply(Lens lens) {
-                                return lens;
-                            }
-                        });
+                        list.replaceAll(curr -> curr.equals(lens) ? lens : curr);
                     } else {
                         list.add(lens);
                     }
@@ -68,7 +67,21 @@ public class LensLibrary extends Puzzle<Long> {
             }
         }
 
-        return 0;
+        long result = 0;
+        for (Map.Entry<Long, List<Lens>> entry : map.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                continue;
+            }
+            long boxNumber = entry.getKey() + 1;
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                int slotNumber = i + 1;
+                int focalLength = entry.getValue().get(i).focalLength;
+                result += boxNumber * slotNumber * focalLength;
+            }
+
+        }
+
+        return result;
     }
 
     private record Lens(String label, int focalLength) {
@@ -88,7 +101,6 @@ public class LensLibrary extends Puzzle<Long> {
     }
 
     public long hash(String input) {
-        System.out.println(input);
         long current = 0;
         for (int i = 0; i < input.length(); i++) {
             int ascii = input.charAt(i);

@@ -35,8 +35,8 @@ class LensLibraryTest {
 
     private static Stream<Arguments> games2() {
         return Stream.of(
-                Arguments.of("/puzzle15/short1.txt", 1320)
-//                , Arguments.of("/puzzle15/data.txt", 512797)
+                Arguments.of("/puzzle15/short1.txt", 145)
+                , Arguments.of("/puzzle15/data.txt", 262454)
 
         );
     }
