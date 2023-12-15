@@ -1,53 +1,30 @@
 package com.stukans.advent.day13;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.OptionalInt;
-import java.util.Set;
+import com.stukans.advent.Puzzle;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PointOfIncidence {
+public class PointOfIncidence extends Puzzle {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_PURPLE = "\u001B[35m";
 
-    public long solve(List<String> input) {
+    public long solve(List<String> input, boolean smudged) {
         List<Block> blocks = new ArrayList<>();
-
         List<String> blockLines = new ArrayList<>();
-        List<Integer> horizontalHashes = new ArrayList<>();
-        List<Pair> horizontalHashesPairs = new ArrayList<>();
-        int prev = -1;
-        int index = 0;
-
         for (int i = 0; i < input.size(); i++) {
             String line = input.get(i);
             if (line.strip().isBlank()) {
-                blocks.add(new Block(blockLines, filterOutPairs(horizontalHashesPairs, horizontalHashes), horizontalHashes));
-                prev = -1;
+                blocks.add(new Block(convert(blockLines)));
                 blockLines = new ArrayList<>();
-                horizontalHashesPairs = new ArrayList<>();
-                horizontalHashes = new ArrayList<>();
-                index = 0;
                 continue;
             }
-
             blockLines.add(line);
-            int hash = Objects.hash(line);
-            horizontalHashes.add(hash);
-            if (hash == prev) {
-                horizontalHashesPairs.add(new Pair(index - 1, index));
-            }
-            prev = hash;
-            index++;
         }
-
-        blocks.add(new Block(blockLines, filterOutPairs(horizontalHashesPairs, horizontalHashes), horizontalHashes));
+        blocks.add(new Block(convert(blockLines)));
 
         return blocks.stream()
                 .map(Block::calc)
@@ -92,60 +69,120 @@ public class PointOfIncidence {
     }
 
     private class Block {
-        private final List<Pair> horizontalHashesPairs;
-        private final List<Integer> horizontalHashes;
+        private List<Pair> horizontalHashesPairs;
+        private List<Integer> horizontalHashes;
+        private List<Pair> verticalHashesPairs;
+        private List<Integer> verticalHashes;
+        private final char[][] block;
 
-        private final List<Pair> verticalHashesPairs = new ArrayList<>();
-        private final List<Integer> verticalHashes = new ArrayList<>();
-        private final List<String> block;
+        public int y = 0;
+        public int x = 0;
+        boolean xRotates = false;
 
-        public Block(List<String> block, List<Pair> horizontalHashesPairs, List<Integer> horizontalHashes) {
-            this.horizontalHashesPairs = horizontalHashesPairs;
-            this.horizontalHashes = horizontalHashes;
+        public Block(char[][] block) {
             this.block = block;
+        }
+
+        public Optional<Block> smudged() {
+            char[][] newArr = new char[block.length][];
+            for (int i = 0; i < block.length; i++) {
+                newArr[i] = Arrays.copyOf(block[i], block[i].length);
+            }
+            newArr[y][x] = newArr[y][x] == '#' ? '.' : '#';
+
+            if (x >= block[y].length - 1) {
+                x = 0;
+                xRotates = true;
+            } else {
+                x++;
+            }
+
+            if (xRotates) {
+                y++;
+                xRotates = false;
+            }
+
+            if (y >= block.length - 1) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new Block(newArr));
+        }
+
+        public void calculatePairs() {
+            horizontal(block);
+            vertical(block);
+        }
+
+        private void horizontal(char[][] block) {
+            List<Integer> hashes = new ArrayList<>();
+            List<Pair> pairs = new ArrayList<>();
 
             int prev = -1;
+            int index = 0;
+            for (char[] line : block) {
+                int hash = Objects.hash(new String(line));
+                hashes.add(hash);
+                if (hash == prev) {
+                    pairs.add(new Pair(index - 1, index));
+                }
+                prev = hash;
+                index++;
+            }
+            this.horizontalHashesPairs = new ArrayList<>(filterOutPairs(pairs, hashes));
+            this.horizontalHashes = hashes;
+        }
+
+        private void vertical(char[][] block) {
+            List<Integer> hashes = new ArrayList<>();
+            int prev = -1;
             int y = 0;
-            int length = block.get(y).length();
+            int length = block[y].length;
             List<Pair> pairs = new ArrayList<>();
             for (int x = 0; x < length; x++) {
                 StringBuilder builder = new StringBuilder();
-                for (y = 0; y < block.size(); y++) {
-                    builder.append(block.get(y).charAt(x));
+                for (y = 0; y < block.length; y++) {
+                    builder.append(block[y][x]);
                 }
                 String line = builder.toString();
                 int hash = Objects.hash(line);
-                verticalHashes.add(hash);
+                hashes.add(hash);
                 if (prev == hash) {
                     pairs.add(new Pair(x - 1, x));
                 }
                 prev = hash;
             }
 
-            this.verticalHashesPairs.addAll(filterOutPairs(pairs, verticalHashes));
+            this.verticalHashesPairs = new ArrayList<>(filterOutPairs(pairs, hashes));
+            this.verticalHashes = hashes;
         }
 
         private int calc() {
-            /*System.out.println();
+            calculatePairs();
+
+            if (horizontalHashesPairs.isEmpty() && verticalHashesPairs.isEmpty()) {
+                return 0;
+            }
+
+            System.out.println();
             System.out.print("  ");
-            for (int i = 1; i < block.get(0).length() + 1; i++) {
+            for (int i = 1; i < block[0].length + 1; i++) {
                 System.out.print(i < 10 ? " " : i / 10);
             }
             System.out.println();
             System.out.print("  ");
-            for (int i = 1; i < block.get(0).length() + 1; i++) {
+            for (int i = 1; i < block[0].length + 1; i++) {
                 System.out.print(i < 10 ? i : i % 10);
             }
-            System.out.println();*/
+            System.out.println();
             Set<Integer> h = horizontalHashesPairs.stream().flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
             Set<Integer> v = verticalHashesPairs.stream().flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
 
-            for (int i = 0; i < block.size(); i++) {
-                //System.out.printf("%2d", i + 1);
-                for (int j = 0; j < block.get(i).length(); j++) {
-                    char c = block.get(i).charAt(j) == '.' ? '.' : '#';
-//                    char c = block.get(i).charAt(j) == '.' ? '█' : '#';
-//                    char c = '█';
+            for (int i = 0; i < block.length; i++) {
+                System.out.printf("%2d", i + 1);
+                for (int j = 0; j < block[i].length; j++) {
+//                    char c = block.get(i).charAt(j) == '.' ? '.' : '#';
+                    char c = block[i][j] == '.' ? '█' : '#';
                     if (h.contains(i) && v.contains(j)) {
                         System.out.printf("%s%s%s", ANSI_PURPLE, c, ANSI_RESET);
                     } else if (h.contains(i) && !v.contains(j)) {

@@ -2,7 +2,7 @@ package com.stukans.advent.day14;
 
 import com.stukans.advent.Puzzle;
 
-import java.util.*;
+import java.util.List;
 
 public class ParabolicReflectorDish extends Puzzle {
 
@@ -12,66 +12,22 @@ public class ParabolicReflectorDish extends Puzzle {
             matrix[i] = input.get(i).toCharArray();
         }
 
-        //printTheMatrix(matrix);
+        printTheMatrix(matrix);
         if (cycles == -1) {
             tiltNorth(matrix);
             printTheMatrix(matrix);
             return weight(matrix);
         }
 
+        int n, w, s, e;
         for (int i = 0; i < cycles; i++) {
             tiltNorth(matrix);
             tiltWest(matrix);
             tiltSouth(matrix);
             tiltEast(matrix);
-            //System.out.printf("%d%c", weight, i % 7 == 0 ? '\n' : ' ');
         }
 
         return weight(matrix);
-    }
-
-    public static List<List<Integer>> generateAllSubsequences(List<Integer> list) {
-        List<List<Integer>> subsequences = new ArrayList<>();
-        int n = list.size();
-
-        // There are 2^n possible subsequences
-        for (int i = 0; i < (1 << n); i++) { // equivalent to 2^n
-            List<Integer> subsequence = new ArrayList<>();
-
-            for (int j = 0; j < n; j++) {
-                // Check if the j-th bit in i is set (which means include the element in the subsequence)
-                if ((i & (1 << j)) != 0) {
-                    subsequence.add(list.get(j));
-                }
-            }
-
-            subsequences.add(subsequence);
-        }
-
-        return subsequences;
-    }
-
-    public static List<List<Integer>> findRepetitiveSubsequences(List<Integer> list, int subsequenceLength) {
-        if (subsequenceLength <= 0 || list.size() < 2 * subsequenceLength) {
-            return java.util.Collections.emptyList();
-        }
-
-        Map<String, List<Integer>> sequences = new HashMap<>();
-        List<List<Integer>> repetitiveSubsequences = new ArrayList<>();
-        Set<String> addedHashes = new HashSet<>();
-
-        for (int i = 0; i <= list.size() - subsequenceLength; i++) {
-            List<Integer> subsequence = list.subList(i, i + subsequenceLength);
-            String hash = subsequence.toString(); // Using string representation as hash for simplicity.
-
-            if (!sequences.containsKey(hash)) {
-                sequences.put(hash, new ArrayList<>(subsequence));
-            } else if (addedHashes.add(hash)) {
-                repetitiveSubsequences.add(subsequence);
-            }
-        }
-
-        return repetitiveSubsequences;
     }
 
     public void tiltSouth(char[][] matrix) {

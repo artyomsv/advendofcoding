@@ -1,5 +1,7 @@
 package com.stukans.advent;
 
+import java.util.List;
+
 public class Puzzle {
 
     protected void printTheMatrix(char[][] matrix) {
@@ -10,6 +12,14 @@ public class Puzzle {
             }
             System.out.println();
         }
+    }
+
+    protected char[][] convert(List<String> blockLines) {
+        char[][] arr = new char[blockLines.size()][];
+        for (int j = 0; j < blockLines.size(); j++) {
+            arr[j] = blockLines.get(j).toCharArray();
+        }
+        return arr;
     }
 
     protected Character[] convert(char[] hands) {
@@ -26,6 +36,21 @@ public class Puzzle {
             characterArray[i] = hands[i];
         }
         return characterArray;
+    }
+
+    public static class Pair<T, E> {
+
+        final T t;
+        final E e;
+
+        public static <E, T> Pair<E, T> of(E e, T t) {
+            return new Pair<>(e, t);
+        }
+
+        private Pair(T t, E e) {
+            this.t = t;
+            this.e = e;
+        }
     }
 
 }

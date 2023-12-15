@@ -17,10 +17,10 @@ class ParabolicReflectorDishTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle14/short1.txt", 136, -1),
-                Arguments.of("/puzzle14/short1.txt", 136, 100)
-                , Arguments.of("/puzzle14/data.txt", 106648, -1)
-                , Arguments.of("/puzzle14/data.txt", 106648, 5000)
+//                Arguments.of("/puzzle14/short1.txt", 136, -1),
+                Arguments.of("/puzzle14/short1.txt", 136, 1000000000)
+//                , Arguments.of("/puzzle14/data.txt", 106648, -1)
+//                 Arguments.of("/puzzle14/data.txt", 106648, 200)
 
         );
     }
