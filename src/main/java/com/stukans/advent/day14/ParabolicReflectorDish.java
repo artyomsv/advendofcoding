@@ -4,9 +4,15 @@ import com.stukans.advent.Puzzle;
 
 import java.util.List;
 
-public class ParabolicReflectorDish extends Puzzle {
+public class ParabolicReflectorDish extends Puzzle<Integer> {
 
-    public long solve(List<String> input, int cycles) {
+    @Override
+    public long solve(List<String> input) {
+        return 0;
+    }
+
+    @Override
+    public long solve(List<String> input, Integer cycles) {
         char[][] matrix = new char[input.size()][];
         for (int i = 0; i < input.size(); i++) {
             matrix[i] = input.get(i).toCharArray();

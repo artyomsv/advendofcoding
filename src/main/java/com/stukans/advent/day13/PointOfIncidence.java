@@ -6,13 +6,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PointOfIncidence extends Puzzle {
+public class PointOfIncidence extends Puzzle<Boolean> {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_PURPLE = "\u001B[35m";
 
-    public long solve(List<String> input, boolean smudged) {
+    @Override
+    public long solve(List<String> input) {
+        return solve(input, false);
+    }
+
+    @Override
+    public long solve(List<String> input, Boolean smudged) {
         List<Block> blocks = new ArrayList<>();
         List<String> blockLines = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {

@@ -4,9 +4,16 @@ import com.stukans.advent.Puzzle;
 
 import java.util.*;
 
-public class CosmicExpansion extends Puzzle {
+public class CosmicExpansion extends Puzzle<Integer> {
 
-    public long solve(List<String> input, int shift) {
+
+    @Override
+    public long solve(List<String> input) {
+        return solve(input, 0);
+    }
+
+    @Override
+    public long solve(List<String> input, Integer shift) {
         Character[][] universe = convertToMatrix(input);
         Set<Integer> horizontalExpensions = calcHorizontalExpensions(universe);
         Set<Integer> verticalExpensions = calculateVerticalExpensions(universe);

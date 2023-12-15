@@ -2,7 +2,11 @@ package com.stukans.advent;
 
 import java.util.List;
 
-public class Puzzle {
+public abstract class Puzzle<T> {
+
+    public abstract long solve(List<String> input);
+
+    public abstract long solve(List<String> input, T t);
 
     protected void printTheMatrix(char[][] matrix) {
         System.out.println();

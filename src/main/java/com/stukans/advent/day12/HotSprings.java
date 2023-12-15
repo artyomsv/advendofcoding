@@ -9,9 +9,15 @@ import java.util.stream.Stream;
 
 import static com.stukans.advent.Utils.unfold;
 
-public class HotSprings extends Puzzle {
+public class HotSprings extends Puzzle<Integer> {
 
-    public long solve(List<String> input, int unfolding) {
+    @Override
+    public long solve(List<String> input) {
+        return solve(input, 1);
+    }
+
+    @Override
+    public long solve(List<String> input, Integer unfolding) {
         long result = 0;
         for (String s : input) {
             String[] s1 = s.split(" ");
