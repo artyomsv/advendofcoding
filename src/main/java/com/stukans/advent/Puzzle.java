@@ -18,10 +18,10 @@ public abstract class Puzzle<T> {
         }
     }
 
-    protected char[][] convert(List<String> blockLines) {
-        char[][] arr = new char[blockLines.size()][];
-        for (int j = 0; j < blockLines.size(); j++) {
-            arr[j] = blockLines.get(j).toCharArray();
+    protected char[][] convert(List<String> input) {
+        char[][] arr = new char[input.size()][];
+        for (int j = 0; j < input.size(); j++) {
+            arr[j] = input.get(j).toCharArray();
         }
         return arr;
     }
