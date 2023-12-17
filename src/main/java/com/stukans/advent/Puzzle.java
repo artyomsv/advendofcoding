@@ -26,6 +26,19 @@ public abstract class Puzzle<T> {
         return arr;
     }
 
+    protected int[][] convertToIntArray(List<String> input) {
+        int[][] arr = new int[input.size()][];
+        for (int j = 0; j < input.size(); j++) {
+            char[] charArray = input.get(j).toCharArray();
+            int[] line = new int[charArray.length];
+            arr[j] = line;
+            for (int i = 0; i < charArray.length; i++) {
+                line[i] = Character.digit(charArray[i], 10);
+            }
+        }
+        return arr;
+    }
+
     protected Character[] convert(char[] hands) {
         Character[] characterArray = new Character[hands.length];
         for (int i = 0; i < hands.length; i++) {
