@@ -17,20 +17,20 @@ class PointOfIncidenceTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-//                Arguments.of("/puzzle13/short1.txt", 405, false)
-                Arguments.of("/puzzle13/short1.txt", 405, true)
-//                , Arguments.of("/puzzle13/short2.txt", 8, false)
-//                , Arguments.of("/puzzle13/short3.txt", 1800, false)
-//                , Arguments.of("/puzzle13/short4.txt", 2, false)
-//                , Arguments.of("/puzzle13/short5.txt", 1, false)
-//                , Arguments.of("/puzzle13/short6.txt", 7, false)
-//                , Arguments.of("/puzzle13/short7.txt", 7, false)
-//                , Arguments.of("/puzzle13/short8.txt", 1, false)
-//                , Arguments.of("/puzzle13/short9.txt", 500, false)
-//                , Arguments.of("/puzzle13/short10.txt", 2, false)
-//                , Arguments.of("/puzzle13/short11.txt", 1, false)
-//                , Arguments.of("/puzzle13/short12.txt", 600, false)
-//                , Arguments.of("/puzzle13/data.txt", 34821, false)
+                Arguments.of("/puzzle13/short1.txt", 405, false)
+//                Arguments.of("/puzzle13/short1.txt", 405, true)
+                , Arguments.of("/puzzle13/short2.txt", 8, false)
+                , Arguments.of("/puzzle13/short3.txt", 1800, false)
+                , Arguments.of("/puzzle13/short4.txt", 2, false)
+                , Arguments.of("/puzzle13/short5.txt", 1, false)
+                , Arguments.of("/puzzle13/short6.txt", 7, false)
+                , Arguments.of("/puzzle13/short7.txt", 7, false)
+                , Arguments.of("/puzzle13/short8.txt", 1, false)
+                , Arguments.of("/puzzle13/short9.txt", 500, false)
+                , Arguments.of("/puzzle13/short10.txt", 2, false)
+                , Arguments.of("/puzzle13/short11.txt", 1, false)
+                , Arguments.of("/puzzle13/short12.txt", 600, false)
+                , Arguments.of("/puzzle13/data.txt", 34821, false)
 
         );
     }

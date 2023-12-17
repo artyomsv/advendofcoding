@@ -2,7 +2,15 @@ package com.stukans.advent.day13;
 
 import com.stukans.advent.Puzzle;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,9 +41,18 @@ public class PointOfIncidence extends Puzzle<Boolean> {
         blocks.add(new Block(convert(blockLines)));
 
         return blocks.stream()
-                .map(Block::calc)
-                .reduce(Integer::sum)
-                .orElse(-1);
+                .map(block -> {
+                    long horizontal = block.horizontal();
+                    if (horizontal != 0) {
+                        block.print();
+                        return horizontal;
+                    }
+                    long vertical = block.vertical();
+                    block.print();
+                    return vertical;
+                })
+                .reduce(Long::sum)
+                .orElse(-1L);
     }
 
     private static List<Pair> filterOutPairs(List<Pair> horizontalHashesPairs, List<Integer> horizontalHashes) {
@@ -115,12 +132,7 @@ public class PointOfIncidence extends Puzzle<Boolean> {
             return Optional.of(new Block(newArr));
         }
 
-        public void calculatePairs() {
-            horizontal(block);
-            vertical(block);
-        }
-
-        private void horizontal(char[][] block) {
+        private long horizontal() {
             List<Integer> hashes = new ArrayList<>();
             List<Pair> pairs = new ArrayList<>();
 
@@ -137,9 +149,22 @@ public class PointOfIncidence extends Puzzle<Boolean> {
             }
             this.horizontalHashesPairs = new ArrayList<>(filterOutPairs(pairs, hashes));
             this.horizontalHashes = hashes;
+
+            Map<Integer, Pair> horizontal = calcReflection(horizontalHashesPairs, horizontalHashes);
+
+            OptionalInt maxHorizontal = horizontal.keySet().stream().mapToInt(it -> it).max();
+
+            if (maxHorizontal.isEmpty()) {
+                return 0;
+            }
+
+            Pair pair = horizontal.get(maxHorizontal.getAsInt());
+            int result = (pair.i1 + 1) * 100;
+            System.out.println("result: " + result);
+            return result;
         }
 
-        private void vertical(char[][] block) {
+        private long vertical() {
             List<Integer> hashes = new ArrayList<>();
             int prev = -1;
             int y = 0;
@@ -161,16 +186,22 @@ public class PointOfIncidence extends Puzzle<Boolean> {
 
             this.verticalHashesPairs = new ArrayList<>(filterOutPairs(pairs, hashes));
             this.verticalHashes = hashes;
-        }
 
-        private int calc() {
-            calculatePairs();
+            Map<Integer, Pair> vertical = calcReflection(verticalHashesPairs, verticalHashes);
 
-            if (horizontalHashesPairs.isEmpty() && verticalHashesPairs.isEmpty()) {
+            OptionalInt maxVertical = vertical.keySet().stream().mapToInt(it -> it).max();
+
+            if (maxVertical.isEmpty()) {
                 return 0;
             }
 
-            System.out.println();
+            Pair pair = vertical.get(maxVertical.getAsInt());
+            int result = pair.i1 + 1;
+            System.out.println("result: " + result);
+            return result;
+        }
+
+        private void print() {
             System.out.print("  ");
             for (int i = 1; i < block[0].length + 1; i++) {
                 System.out.print(i < 10 ? " " : i / 10);
@@ -181,8 +212,8 @@ public class PointOfIncidence extends Puzzle<Boolean> {
                 System.out.print(i < 10 ? i : i % 10);
             }
             System.out.println();
-            Set<Integer> h = horizontalHashesPairs.stream().flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
-            Set<Integer> v = verticalHashesPairs.stream().flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
+            Set<Integer> h = Stream.ofNullable(horizontalHashesPairs).flatMap(List::stream).flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
+            Set<Integer> v = Stream.ofNullable(verticalHashesPairs).flatMap(List::stream).flatMap(pair -> Stream.of(pair.i1, pair.i2)).collect(Collectors.toSet());
 
             for (int i = 0; i < block.length; i++) {
                 System.out.printf("%2d", i + 1);
@@ -201,29 +232,6 @@ public class PointOfIncidence extends Puzzle<Boolean> {
                 }
                 System.out.println();
 
-            }
-
-            Map<Integer, Pair> vertical = calcReflection(verticalHashesPairs, verticalHashes);
-            Map<Integer, Pair> horizontal = calcReflection(horizontalHashesPairs, horizontalHashes);
-
-            OptionalInt maxVertical = vertical.keySet().stream().mapToInt(it -> it).max();
-            OptionalInt maxHorizontal = horizontal.keySet().stream().mapToInt(it -> it).max();
-
-            int vert = maxVertical.orElse(-1);
-            int horiz = maxHorizontal.orElse(-1);
-
-            if (vert > horiz) {
-                Pair pair = vertical.get(vert);
-                int result = pair.i1 + 1;
-                System.out.println("result: " + result);
-                System.out.println();
-                return result;
-            } else {
-                Pair pair = horizontal.get(horiz);
-                int result = (pair.i1 + 1) * 100;
-                System.out.println("result: " + result);
-                System.out.println();
-                return result;
             }
         }
 

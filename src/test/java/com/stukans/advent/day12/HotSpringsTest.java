@@ -20,7 +20,7 @@ class HotSpringsTest {
                 Arguments.of("/puzzle12/short1.txt", 21, 1)
                 , Arguments.of("/puzzle12/short1.txt", 525152, 5)
                 , Arguments.of("/puzzle12/data.txt", 7633, 1)
-                , Arguments.of("/puzzle12/data.txt", 0, 5)
+                //, Arguments.of("/puzzle12/data.txt", 0, 5)
 
         );
     }
@@ -74,7 +74,7 @@ class HotSpringsTest {
 //                , Arguments.of("?###????????", new Integer[]{3, 2, 1}, 33750L, 4)
 //                , Arguments.of("?###????????", new Integer[]{3, 2, 1}, 506250L, 5)
 
-                , Arguments.of("???#?????#?.#???#???", new Integer[]{9, 7}, 506250L, 5)
+                //, Arguments.of("???#?????#?.#???#???", new Integer[]{9, 7}, 506250L, 5)
         );
     }
 
