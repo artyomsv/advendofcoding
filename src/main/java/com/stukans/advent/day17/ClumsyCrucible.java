@@ -2,61 +2,92 @@ package com.stukans.advent.day17;
 
 import com.stukans.advent.Puzzle;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 class ClumsyCrucible extends Puzzle<Void> {
+
+    List<Location> finished = new ArrayList<>();
 
     @Override
     public long solve(List<String> input) {
         int[][] matrix = convertToIntArray(input);
 
-        Set<Location> go = go(Location.of(1, 0, Direction.E), matrix, 0, new HashSet<>());
+        Set<Location> set = new HashSet<>();
+        Location start = Location.of(0, 0, Direction.E, matrix[0][0]);
+        set.add(start);
+        Optional<Location> optional = start.further(matrix);
+        Location further = optional.get();
+        further.setWeight(further.calcWeight(matrix) + start.getWeight());
+        go2(further, matrix, set);
 
         return 0;
     }
 
-    private Set<Location> go(Location location, int[][] array, int steps, Set<Location> visited) {
-        steps++;
-        System.out.printf("[%d,%d] steps:%d, visited:%d\n", location.x(), location.y(), steps, visited.size());
+    private void go2(Location location, int[][] array, Set<Location> visited) {
+        visited.add(location);
+        System.out.printf("[%d,%d] visited:%d end:%s\n", location.x(), location.y(), visited.size(), location.endReached(array));
         if (location.endReached(array)) {
-            return visited;
+            finished.add(location);
+            return;
         }
-        for (int i = 0; i < 3; i++) {
-            Location left = location.toLeft();
-            if (left.inBounds(array)) {
-                HashSet<Location> set = new HashSet<>(visited);
-                set.add(left);
-                return go(left, array, steps, set);
-            }
 
-            Location right = location.toRight();
-            if (right.inBounds(array)) {
-                if (visited.contains(right)) {
-                    return Collections.emptySet();
+        List<Location> currentLocations = List.of(location);
+
+        while (!currentLocations.isEmpty()) {
+            List<Location> newCurrentLocations = new ArrayList<>();
+            for (Location current : currentLocations) {
+                visited.add(current);
+                List<Location> possibleLocations = new ArrayList<>();
+                current.toLeft(array).ifPresent(possibleLocations::add);
+                current.toRight(array).ifPresent(possibleLocations::add);
+                current.further(array).ifPresent(possibleLocations::add);
+
+                for (Location possibleLocation : possibleLocations) {
+                    if (visited.contains(possibleLocation)) {
+                        continue;
+                    }
+                    int locationWeight = possibleLocation.calcWeight(array) + current.getWeight();
+                    if (locationWeight < possibleLocation.getWeight()) {
+                        possibleLocation.setWeight(locationWeight);
+                    }
+
+                    if (possibleLocation.endReached(array)) {
+                        finished.add(possibleLocation);
+                    }
+
+                    newCurrentLocations.add(possibleLocation);
                 }
-                HashSet<Location> set = new HashSet<>(visited);
-                set.add(right);
-                return go(right, array, steps, set);
             }
-
-            location = location.further();
-            if (!location.inBounds(array)) {
-                break;
-            }
-
-            if (visited.contains(location)) {
-                return Collections.emptySet();
-            }
-            visited.add(location);
-
-
+            currentLocations = newCurrentLocations;
         }
+    }
 
-        return Collections.emptySet();
+    private void go(Location location, int[][] array, Set<Location> visited) {
+        System.out.printf("[%d,%d] visited:%d end:%s\n", location.x(), location.y(), visited.size(), location.endReached(array));
+        if (location.endReached(array)) {
+            finished.add(location);
+            return;
+        }
+        Location next = location;
+        for (int i = 0; i < 3; i++) {
+            next.toLeft(array).filter(it -> !visited.contains(it)).ifPresent(it -> {
+                Set<Location> set = new HashSet<>(visited);
+                set.add(it);
+                go(it, array, set);
+            });
 
+            next.toRight(array).filter(it -> !visited.contains(it)).ifPresent(it -> {
+                Set<Location> set = new HashSet<>(visited);
+                set.add(it);
+                go(it, array, set);
+            });
+
+            Optional<Location> optional = next.further(array).filter(it -> !visited.contains(it));
+            if (optional.isPresent()) {
+                visited.add(optional.get());
+                next = optional.get();
+            }
+        }
     }
 
     @Override

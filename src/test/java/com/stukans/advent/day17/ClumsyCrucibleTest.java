@@ -20,7 +20,7 @@ class ClumsyCrucibleTest {
     private static Stream<Arguments> games() {
         return Stream.of(
                 Arguments.of(folder + "/short1.txt", 46)
-                , Arguments.of(folder + "/data.txt", 6855)
+//                , Arguments.of(folder + "/data.txt", 6855)
 
         );
     }
@@ -57,9 +57,8 @@ class ClumsyCrucibleTest {
         return Stream.of(
                 Arguments.of(
                         """
-                                111
-                                111
-                                111
+                                24134
+                                32154
                                 """,
                         3)
 

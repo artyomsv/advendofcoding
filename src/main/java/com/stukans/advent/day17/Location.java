@@ -1,6 +1,7 @@
 package com.stukans.advent.day17;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public final class Location {
@@ -11,8 +12,17 @@ public final class Location {
     private final int y;
     private final Direction direction;
 
-    public static Location of(int x, int y, Direction direction) {
-        return new Location(x, y, direction);
+    private int weight = Integer.MAX_VALUE;
+
+    private Optional<Location> left = Optional.empty();
+    private Optional<Location> further = Optional.empty();
+    private Optional<Location> right = Optional.empty();
+
+
+    public static Location of(int x, int y, Direction direction, int weight) {
+        Location location = new Location(x, y, direction);
+        location.weight = weight;
+        return location;
     }
 
     private Location(int x, int y, Direction direction) {
@@ -21,31 +31,43 @@ public final class Location {
         this.direction = direction;
     }
 
-    public Location toLeft() {
-        return switch (direction) {
-            case N -> west();
-            case W -> south();
-            case S -> east();
-            case E -> north();
+    public Optional<Location> toLeft(int[][] array) {
+        Optional<Location> left = switch (direction) {
+            case N -> west(array);
+            case W -> south(array);
+            case S -> east(array);
+            case E -> north(array);
         };
+        left.ifPresent(it -> {
+            this.left = Optional.of(it);
+        });
+        return left;
     }
 
-    public Location further() {
-        return switch (direction) {
-            case N -> north();
-            case W -> west();
-            case S -> south();
-            case E -> east();
+    public Optional<Location> further(int[][] array) {
+        Optional<Location> further = switch (direction) {
+            case N -> north(array);
+            case W -> west(array);
+            case S -> south(array);
+            case E -> east(array);
         };
+        further.ifPresent(it -> {
+            this.further = Optional.of(it);
+        });
+        return further;
     }
 
-    public Location toRight() {
-        return switch (direction) {
-            case N -> east();
-            case W -> north();
-            case S -> west();
-            case E -> south();
+    public Optional<Location> toRight(int[][] array) {
+        Optional<Location> right = switch (direction) {
+            case N -> east(array);
+            case W -> north(array);
+            case S -> west(array);
+            case E -> south(array);
         };
+        right.ifPresent(it -> {
+            this.right = Optional.of(it);
+        });
+        return right;
     }
 
     public boolean endReached(int[][] array) {
@@ -56,33 +78,37 @@ public final class Location {
         return (x >= 0 && x < array[0].length) && (y >= 0 && y < array.length);
     }
 
-    private Location north() {
-        return new Location(x, y - 1, Direction.N);
+    private boolean inBounds(int x, int y, int[][] array) {
+        return (x >= 0 && x < array[0].length) && (y >= 0 && y < array.length);
     }
 
-    private Location west() {
-        return new Location(x - 1, y, Direction.W);
+    private Optional<Location> north(int[][] array) {
+        if (inBounds(x, y - 1, array)) {
+            return Optional.of(new Location(x, y - 1, Direction.N));
+        }
+        return Optional.empty();
+
     }
 
-    private Location south() {
-        return new Location(x, y + 1, Direction.S);
+    private Optional<Location> west(int[][] array) {
+        if (inBounds(x - 1, y, array)) {
+            return Optional.of(new Location(x - 1, y, Direction.W));
+        }
+        return Optional.empty();
     }
 
-    private Location east() {
-        return new Location(x + 1, y, Direction.E);
+    private Optional<Location> south(int[][] array) {
+        if (inBounds(x, y + 1, array)) {
+            return Optional.of(new Location(x, y + 1, Direction.S));
+        }
+        return Optional.empty();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
-        return x == location.x && y == location.y && direction == location.direction;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y, direction);
+    private Optional<Location> east(int[][] array) {
+        if (inBounds(x + 1, y, array)) {
+            return Optional.of(new Location(x + 1, y, Direction.E));
+        }
+        return Optional.empty();
     }
 
     public int x() {
@@ -97,12 +123,38 @@ public final class Location {
         return direction;
     }
 
-    @Override
-    public String toString() {
-        return "Location[" +
-                "x=" + x + ", " +
-                "y=" + y + ", " +
-                "direction=" + direction + ']';
+    public int getWeight() {
+        return weight;
     }
 
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int calcWeight(int[][] array) {
+        return array[y][x];
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "x=" + x +
+                ", y=" + y +
+                ", direction=" + direction +
+                ", weight=" + weight +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return x == location.x && y == location.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 }
