@@ -63,7 +63,7 @@ public final class Location {
                 it.furtherStepsCount = this.furtherStepsCount + 1;
             }
         });
-        return further.flatMap(location -> location.furtherStepsCount > 3 ? Optional.empty() : Optional.of(location));
+        return further.flatMap(location -> location.furtherStepsCount >= 3 ? Optional.empty() : Optional.of(location));
     }
 
     public Optional<Location> toRight(int[][] array) {

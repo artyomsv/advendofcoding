@@ -2,12 +2,7 @@ package com.stukans.advent.day17;
 
 import com.stukans.advent.Puzzle;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 class ClumsyCrucible extends Puzzle<Void> {
 
@@ -21,7 +16,7 @@ class ClumsyCrucible extends Puzzle<Void> {
         for (int y = 0; y < matrix.length; y++) {
             nodes[y] = new Node[matrix[y].length];
             for (int x = 0; x < matrix[y].length; x++) {
-                nodes[y][x] = new Node(Location.of(x, y), (x == 0 && y == 0) ? matrix[y][x] : Integer.MAX_VALUE);
+                nodes[y][x] = new Node(Location.of(x, y), (x == 0 && y == 0) ? 0 : Integer.MAX_VALUE);
             }
         }
 
@@ -46,6 +41,9 @@ class ClumsyCrucible extends Puzzle<Void> {
         print[location.y()][location.x()] = '█';
 
         List<Location> currentLocations = List.of(location);
+
+        PriorityQueue<Location> queue = new PriorityQueue<>();
+
         while (!currentLocations.isEmpty()) {
             List<Location> newCurrentLocations = new ArrayList<>();
 
