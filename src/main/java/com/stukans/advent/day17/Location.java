@@ -2,26 +2,29 @@ package com.stukans.advent.day17;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 public final class Location {
 
-    private Set<Location> visited;
-
     private final int x;
     private final int y;
-    private final Direction direction;
+    private Direction direction;
 
-    private int weight = Integer.MAX_VALUE;
+    private boolean isFurtherStep = false;
+    private int furtherStepsCount = 0;
 
     private Optional<Location> left = Optional.empty();
     private Optional<Location> further = Optional.empty();
     private Optional<Location> right = Optional.empty();
 
+    private Location previous;
 
-    public static Location of(int x, int y, Direction direction, int weight) {
+    public static Location of(int x, int y) {
+        Location location = new Location(x, y, null);
+        return location;
+    }
+
+    public static Location of(int x, int y, Direction direction) {
         Location location = new Location(x, y, direction);
-        location.weight = weight;
         return location;
     }
 
@@ -40,6 +43,7 @@ public final class Location {
         };
         left.ifPresent(it -> {
             this.left = Optional.of(it);
+            it.previous = this;
         });
         return left;
     }
@@ -53,8 +57,13 @@ public final class Location {
         };
         further.ifPresent(it -> {
             this.further = Optional.of(it);
+            it.previous = this;
+            it.isFurtherStep = true;
+            if (this.isFurtherStep) {
+                it.furtherStepsCount = this.furtherStepsCount + 1;
+            }
         });
-        return further;
+        return further.flatMap(location -> location.furtherStepsCount > 3 ? Optional.empty() : Optional.of(location));
     }
 
     public Optional<Location> toRight(int[][] array) {
@@ -66,6 +75,7 @@ public final class Location {
         };
         right.ifPresent(it -> {
             this.right = Optional.of(it);
+            it.previous = this;
         });
         return right;
     }
@@ -123,14 +133,6 @@ public final class Location {
         return direction;
     }
 
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
     public int calcWeight(int[][] array) {
         return array[y][x];
     }
@@ -141,7 +143,6 @@ public final class Location {
                 "x=" + x +
                 ", y=" + y +
                 ", direction=" + direction +
-                ", weight=" + weight +
                 '}';
     }
 
@@ -156,5 +157,9 @@ public final class Location {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    public Node getNode(Node[][] nodes) {
+        return nodes[y][x];
     }
 }

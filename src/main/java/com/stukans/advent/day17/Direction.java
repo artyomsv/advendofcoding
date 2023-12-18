@@ -21,4 +21,13 @@ public enum Direction {
         };
     }
 
+    public Direction further() {
+        return switch (this) {
+            case N -> N;
+            case W -> W;
+            case S -> S;
+            case E -> E;
+        };
+    }
+
 }

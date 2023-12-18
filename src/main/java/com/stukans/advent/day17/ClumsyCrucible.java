@@ -2,7 +2,12 @@ package com.stukans.advent.day17;
 
 import com.stukans.advent.Puzzle;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 class ClumsyCrucible extends Puzzle<Void> {
 
@@ -11,54 +16,77 @@ class ClumsyCrucible extends Puzzle<Void> {
     @Override
     public long solve(List<String> input) {
         int[][] matrix = convertToIntArray(input);
-
-        Set<Location> set = new HashSet<>();
-        Location start = Location.of(0, 0, Direction.E, matrix[0][0]);
-        set.add(start);
-        Optional<Location> optional = start.further(matrix);
-        Location further = optional.get();
-        further.setWeight(further.calcWeight(matrix) + start.getWeight());
-        go2(further, matrix, set);
-
-        return 0;
-    }
-
-    private void go2(Location location, int[][] array, Set<Location> visited) {
-        visited.add(location);
-        System.out.printf("[%d,%d] visited:%d end:%s\n", location.x(), location.y(), visited.size(), location.endReached(array));
-        if (location.endReached(array)) {
-            finished.add(location);
-            return;
+        char[][] print = convert(matrix);
+        Node[][] nodes = new Node[matrix.length][];
+        for (int y = 0; y < matrix.length; y++) {
+            nodes[y] = new Node[matrix[y].length];
+            for (int x = 0; x < matrix[y].length; x++) {
+                nodes[y][x] = new Node(Location.of(x, y), (x == 0 && y == 0) ? matrix[y][x] : Integer.MAX_VALUE);
+            }
         }
 
-        List<Location> currentLocations = List.of(location);
+        Set<Node> set = new HashSet<>();
+        Location start = Location.of(0, 0, Direction.E);
+        print[start.y()][start.x()] = '█';
+        go2(start, matrix, nodes, print, set);
 
+
+        for (int y = 0; y < nodes.length; y++) {
+            System.out.println();
+            for (int x = 0; x < nodes[y].length; x++) {
+                System.out.printf("%3d ", nodes[y][x].getWeight());
+            }
+        }
+
+        return finished.iterator().next().getNode(nodes).getWeight();
+    }
+
+    private void go2(Location location, int[][] array, Node[][] nodes, char[][] print, Set<Node> visited) {
+        visited.add(location.getNode(nodes));
+        print[location.y()][location.x()] = '█';
+
+        List<Location> currentLocations = List.of(location);
         while (!currentLocations.isEmpty()) {
             List<Location> newCurrentLocations = new ArrayList<>();
+
             for (Location current : currentLocations) {
-                visited.add(current);
+                Node currentNode = current.getNode(nodes);
+
+                print[current.y()][current.x()] = '█';
                 List<Location> possibleLocations = new ArrayList<>();
                 current.toLeft(array).ifPresent(possibleLocations::add);
                 current.toRight(array).ifPresent(possibleLocations::add);
                 current.further(array).ifPresent(possibleLocations::add);
 
-                for (Location possibleLocation : possibleLocations) {
-                    if (visited.contains(possibleLocation)) {
+                List<com.stukans.advent.Pair<Location, Node>> list = possibleLocations.stream()
+                        .map(location1 -> new com.stukans.advent.Pair<>(location1, location1.getNode(nodes)))
+                        .sorted(Comparator.comparing(o -> o.getV().getWeight()))
+                        .toList();
+
+                for (com.stukans.advent.Pair<Location, Node> pair : list) {
+                    Node node = pair.getV();
+                    if (visited.contains(node)) {
                         continue;
                     }
-                    int locationWeight = possibleLocation.calcWeight(array) + current.getWeight();
-                    if (locationWeight < possibleLocation.getWeight()) {
-                        possibleLocation.setWeight(locationWeight);
+                    int locationWeight = pair.getT().calcWeight(array) + currentNode.getWeight();
+                    if (locationWeight < node.getWeight()) {
+                        node.setWeight(locationWeight);
                     }
 
-                    if (possibleLocation.endReached(array)) {
-                        finished.add(possibleLocation);
+                    if (pair.getT().endReached(array)) {
+                        finished.add(pair.getT());
+                        print[pair.getT().y()][pair.getT().x()] = 'X';
+                        continue;
                     }
 
-                    newCurrentLocations.add(possibleLocation);
+                    newCurrentLocations.add(pair.getT());
+                    print[pair.getT().y()][pair.getT().x()] = '#';
                 }
+                visited.add(currentNode);
             }
+            //printTheMatrix(print);
             currentLocations = newCurrentLocations;
+
         }
     }
 
