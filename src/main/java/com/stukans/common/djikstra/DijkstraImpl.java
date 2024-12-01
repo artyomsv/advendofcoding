@@ -1,7 +1,7 @@
 package com.stukans.common.djikstra;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -28,7 +28,7 @@ public class DijkstraImpl implements Dijkstra {
                 continue;
             }
 
-            List<Node> children = current.getChildren();
+            Collection<Node> children = current.getChildren();
             for (Node child : children) {
                 Integer combinedWeight = current.getTotalWeight() + child.getWeight();
                 if (combinedWeight < child.getTotalWeight()) {

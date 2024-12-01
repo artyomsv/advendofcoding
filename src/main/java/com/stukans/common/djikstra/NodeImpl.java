@@ -1,18 +1,16 @@
 package com.stukans.common.djikstra;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class NodeImpl implements Node {
 
     private final Coordinates coordinates;
     private final Integer weight;
-    private final Node parent;
     private Integer totalWeight;
-    private List<Node> children;
+    private Set<Node> parents;
+    private Set<Node> children;
+
+    private Node tail;
 
     public static Node root(Coordinates coordinates) {
         return of(coordinates, 0, 0, null);
@@ -32,13 +30,10 @@ public class NodeImpl implements Node {
         this.coordinates = coordinates;
         this.weight = weight;
         this.totalWeight = totalWeight;
-        this.parent = parent;
-    }
-
-
-    @Override
-    public Node withWeight(Integer weight) {
-        return new NodeImpl(coordinates, weight, totalWeight, parent);
+        if (parent != null) {
+            this.parents = new HashSet<>();
+            parents.add(parent);
+        }
     }
 
     @Override
@@ -61,15 +56,24 @@ public class NodeImpl implements Node {
     @Override
     public Node addChild(Node node) {
         if (children == null) {
-            children = new ArrayList<>();
+            children = new HashSet<>();
         }
         children.add(node);
         return this;
     }
 
     @Override
-    public List<Node> getChildren() {
-        return children == null ? Collections.emptyList() : Collections.unmodifiableList(children);
+    public Node addParent(Node node) {
+        if (parents == null) {
+            parents = new HashSet<>();
+        }
+        parents.add(node);
+        return this;
+    }
+
+    @Override
+    public Collection<Node> getChildren() {
+        return children == null ? Collections.emptyList() : Collections.unmodifiableSet(children);
     }
 
     @Override
@@ -83,8 +87,8 @@ public class NodeImpl implements Node {
     }
 
     @Override
-    public Optional<Node> parent() {
-        return Optional.ofNullable(parent);
+    public Collection<Node> parents() {
+        return parents == null ? Collections.emptyList() : Collections.unmodifiableSet(parents);
     }
 
     @Override
@@ -104,4 +108,72 @@ public class NodeImpl implements Node {
     public int hashCode() {
         return Objects.hash(coordinates);
     }
+
+    @Override
+    public String toString() {
+        return coordinates.toString();
+    }
+
+    @Override
+    public void addTail(Node tail) {
+        if (this.tail == null) {
+            this.tail = tail;
+        }
+    }
+
+    @Override
+    public Optional<Node> getTail() {
+        return Optional.ofNullable(tail);
+    }
+
+    @Override
+    public void printPath() {
+        if (getTail().isEmpty()) {
+            System.out.println("Tail not found");
+            return;
+        }
+
+        HashSet<Coordinates> set = new HashSet<>();
+        Coordinates coordinates = tail.getCoordinates();
+        set.add(coordinates);
+        List<Set<Coordinates>> traverse = traverse(tail, set);
+        for (Set<Coordinates> coordinatesSet : traverse) {
+            for (int y = 0; y < coordinates.y() + 1; y++) {
+                System.out.println();
+                for (int x = 0; x < coordinates.x() + 1; x++) {
+                    System.out.print(coordinatesSet.contains(new Coordinates(x, y)) ? '#' : '.');
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    private List<Set<Coordinates>> traverse(Node node, Set<Coordinates> coordinates) {
+        Collection<Node> parents = node.parents();
+        if (parents.isEmpty()) {
+            Set<Coordinates> set = new HashSet<>(coordinates);
+            List<Set<Coordinates>> list = new ArrayList<>();
+            list.add(set);
+            return list;
+        }
+
+        Iterator<Node> iterator = parents.iterator();
+        if (parents.size() == 1) {
+            Set<Coordinates> set = new HashSet<>(coordinates);
+            Node parent = iterator.next();
+            set.add(parent.getCoordinates());
+            return traverse(parent, set);
+        } else {
+            List<Set<Coordinates>> list = new ArrayList<>();
+            while (iterator.hasNext()) {
+                Node parent = iterator.next();
+                HashSet<Coordinates> set = new HashSet<>(coordinates);
+                set.add(parent.getCoordinates());
+                List<Set<Coordinates>> traverse = traverse(parent, set);
+                list.addAll(traverse);
+            }
+            return list;
+        }
+    }
+
 }

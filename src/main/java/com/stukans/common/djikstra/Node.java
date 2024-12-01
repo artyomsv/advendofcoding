@@ -1,10 +1,9 @@
 package com.stukans.common.djikstra;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface Node extends Comparable<Node> {
-
-    Node withWeight(Integer weight);
 
     Integer getTotalWeight();
 
@@ -14,12 +13,19 @@ public interface Node extends Comparable<Node> {
 
     Node addChild(Node node);
 
-    java.util.List<Node> getChildren();
+    Node addParent(Node node);
+
+    Collection<Node> getChildren();
 
     Coordinates getCoordinates();
 
     Integer getWeight();
 
-    Optional<Node> parent();
+    Collection<Node> parents();
 
+    void addTail(Node tail);
+
+    Optional<Node> getTail();
+
+    void printPath();
 }

@@ -93,4 +93,9 @@ public class StepImpl implements Step {
     public Optional<Step> getPrevious() {
         return Optional.ofNullable(previous);
     }
+
+    @Override
+    public String toString() {
+        return "{" + coordinates + direction + '}';
+    }
 }
