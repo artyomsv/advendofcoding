@@ -5,9 +5,15 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.logging.Logger;
 
 public abstract class Puzzle {
 
+    protected final static Logger LOGGER = Logger.getLogger(Puzzle.class.getName());
+
+    public Puzzle() {
+    }
 
     public long solution1(File file) {
         return 0;
@@ -47,6 +53,12 @@ public abstract class Puzzle {
 
     }
 
+    protected Integer[][] asNumbers(File file) {
+        return Arrays.stream(loadDimensional(file))
+                .map(it -> Arrays.stream(it).map(Integer::parseInt).toArray(Integer[]::new))
+                .toArray(Integer[][]::new);
+    }
+
     protected Integer[][] asNumbers(File file, int elements) {
         return Arrays.stream(load(file, elements))
                 .map(it -> Arrays.stream(it).map(Integer::parseInt).toArray(Integer[]::new))
@@ -61,6 +73,14 @@ public abstract class Puzzle {
             }
             return split;
         }).toArray(String[][]::new);
+    }
+
+    protected String[][] loadDimensional(final File file) {
+        Function<String, String[]> mapper = it -> Arrays
+                .stream(it.split(" ")).filter(s -> !s.isBlank()).toArray(String[]::new);
+
+        return Arrays.stream(load(file))
+                .map(mapper).toArray(String[][]::new);
     }
 
     protected String[] load(final File file) {
