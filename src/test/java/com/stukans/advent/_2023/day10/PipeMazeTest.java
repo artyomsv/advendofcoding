@@ -17,17 +17,17 @@ class PipeMazeTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle10/short1.txt", 4, true)
-                , Arguments.of("/puzzle10/short2.txt", 8, true)
-                , Arguments.of("/puzzle10/short3.txt", 23, true)
-                , Arguments.of("/puzzle10/short3.txt", 4, false)
-                , Arguments.of("/puzzle10/short33.txt", 4, false)
-                , Arguments.of("/puzzle10/short4.txt", 70, true)
-                , Arguments.of("/puzzle10/short4.txt", 8, false)
-                , Arguments.of("/puzzle10/short5.txt", 80, true)
-                , Arguments.of("/puzzle10/short5.txt", 10, false)
-                , Arguments.of("/puzzle10/data.txt", 6903, true)
-                , Arguments.of("/puzzle10/data.txt", 265, false)
+                Arguments.of("/2023/puzzle10/short1.txt", 4, true)
+                , Arguments.of("/2023/puzzle10/short2.txt", 8, true)
+                , Arguments.of("/2023/puzzle10/short3.txt", 23, true)
+                , Arguments.of("/2023/puzzle10/short3.txt", 4, false)
+                , Arguments.of("/2023/puzzle10/short33.txt", 4, false)
+                , Arguments.of("/2023/puzzle10/short4.txt", 70, true)
+                , Arguments.of("/2023/puzzle10/short4.txt", 8, false)
+                , Arguments.of("/2023/puzzle10/short5.txt", 80, true)
+                , Arguments.of("/2023/puzzle10/short5.txt", 10, false)
+                , Arguments.of("/2023/puzzle10/data.txt", 6903, true)
+                , Arguments.of("/2023/puzzle10/data.txt", 265, false)
 
         );
     }

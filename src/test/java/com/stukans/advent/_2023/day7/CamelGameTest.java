@@ -62,10 +62,10 @@ class CamelGameTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle7/short.txt", 6440, true),
-                Arguments.of("/puzzle7/short.txt", 5905, false),
-                Arguments.of("/puzzle7/data.txt", 251927063, true),
-                Arguments.of("/puzzle7/data.txt", 255632664, false)
+                Arguments.of("/2023/puzzle7/short.txt", 6440, true),
+                Arguments.of("/2023/puzzle7/short.txt", 5905, false),
+                Arguments.of("/2023/puzzle7/data.txt", 251927063, true),
+                Arguments.of("/2023/puzzle7/data.txt", 255632664, false)
 
         );
     }

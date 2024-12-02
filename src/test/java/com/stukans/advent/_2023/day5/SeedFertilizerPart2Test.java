@@ -14,7 +14,7 @@ class SeedFertilizerPart2Test {
 
     @Test
     void example() throws IOException {
-        URL url = SeedFertilizerPart2Test.class.getResource("/puzzle5/short.txt");
+        URL url = SeedFertilizerPart2Test.class.getResource("/2023/puzzle5/short.txt");
         String path = Objects.requireNonNull(url).getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
 
@@ -25,7 +25,7 @@ class SeedFertilizerPart2Test {
 
     @Test
     void real() throws IOException {
-        URL url = SeedFertilizerPart2Test.class.getResource("/puzzle5/data.txt");
+        URL url = SeedFertilizerPart2Test.class.getResource("/2023/puzzle5/data.txt");
         String path = Objects.requireNonNull(url).getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
 

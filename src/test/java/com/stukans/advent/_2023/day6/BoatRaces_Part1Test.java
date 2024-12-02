@@ -17,10 +17,10 @@ class BoatRaces_Part1Test {
 
     private static Stream<Arguments> arguments() {
         return Stream.of(
-                Arguments.of("/puzzle6/short.txt", 288),
-                Arguments.of("/puzzle6/short2.txt", 71503),
-                Arguments.of("/puzzle6/data.txt", 2269432),
-                Arguments.of("/puzzle6/data2.txt", 35865985)
+                Arguments.of("/2023/puzzle6/short.txt", 288),
+                Arguments.of("/2023/puzzle6/short2.txt", 71503),
+                Arguments.of("/2023/puzzle6/data.txt", 2269432),
+                Arguments.of("/2023/puzzle6/data2.txt", 35865985)
 
         );
     }

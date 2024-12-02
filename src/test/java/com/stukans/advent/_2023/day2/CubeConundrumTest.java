@@ -25,7 +25,7 @@ class CubeConundrumTest {
 
     @Test
     void testPossibleGamesSum() throws IOException {
-        URL url = this.getClass().getResource("/puzzle2/data.txt");
+        URL url = this.getClass().getResource("/2023/puzzle2/data.txt");
         String path = url.getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
         System.out.println("Part1: " + new CubeConundrum().findPossibleGamesSum(input));
@@ -33,7 +33,7 @@ class CubeConundrumTest {
 
     @Test
     void testPossibleGamesPower() throws IOException {
-        URL url = this.getClass().getResource("/puzzle2/data.txt");
+        URL url = this.getClass().getResource("/2023/puzzle2/data.txt");
         String path = url.getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
         System.out.println("Part2: " + new CubeConundrum().totalPower(input));

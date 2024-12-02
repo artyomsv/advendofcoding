@@ -17,9 +17,9 @@ class HotSpringsTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle12/short1.txt", 21, 1)
-                , Arguments.of("/puzzle12/short1.txt", 525152, 5)
-                , Arguments.of("/puzzle12/data.txt", 7633, 1)
+                Arguments.of("/2023/puzzle12/short1.txt", 21, 1)
+                , Arguments.of("/2023/puzzle12/short1.txt", 525152, 5)
+                , Arguments.of("/2023/puzzle12/data.txt", 7633, 1)
                 //, Arguments.of("/puzzle12/data.txt", 0, 5)
 
         );

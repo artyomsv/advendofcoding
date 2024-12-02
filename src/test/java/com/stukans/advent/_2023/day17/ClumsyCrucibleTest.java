@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 class ClumsyCrucibleTest {
 
-    private static final String folder = "/puzzle17";
+    private static final String folder = "/2023/puzzle17";
 
     private static Stream<Arguments> games() {
         return Stream.of(

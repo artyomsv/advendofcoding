@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 class TheFloorWillBeLavaTest {
 
-    private static final String folder = "/puzzle16";
+    private static final String folder = "/2023/puzzle16";
 
     private static Stream<Arguments> games() {
         return Stream.of(

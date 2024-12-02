@@ -14,7 +14,7 @@ class ScratchcardsTest {
 
     @Test
     void test() throws IOException {
-        URL url = ScratchcardsTest.class.getResource("/puzzle4/data.txt");
+        URL url = ScratchcardsTest.class.getResource("/2023/puzzle4/data.txt");
         String path = Objects.requireNonNull(url).getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
         int result = new Scratchcards().part1(input);
@@ -28,7 +28,7 @@ class ScratchcardsTest {
 
     @Test
     void test2() throws IOException {
-        URL url = ScratchcardsTest.class.getResource("/puzzle4/short.txt");
+        URL url = ScratchcardsTest.class.getResource("/2023/puzzle4/short.txt");
         String path = Objects.requireNonNull(url).getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
 

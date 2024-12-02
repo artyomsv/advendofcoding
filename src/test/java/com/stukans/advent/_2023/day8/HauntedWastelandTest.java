@@ -17,9 +17,9 @@ class HauntedWastelandTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle8/short.txt", 2L, true),
-                Arguments.of("/puzzle8/data.txt", 11567L, true),
-                Arguments.of("/puzzle8/data.txt", 9858474970153L, false)
+                Arguments.of("/2023/puzzle8/short.txt", 2L, true),
+                Arguments.of("/2023/puzzle8/data.txt", 11567L, true),
+                Arguments.of("/2023/puzzle8/data.txt", 9858474970153L, false)
 
         );
     }

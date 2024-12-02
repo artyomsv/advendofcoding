@@ -76,7 +76,7 @@ public class TrebuchetTest {
 
     @Test
     void testNoReplacement() throws IOException {
-        URL url = this.getClass().getResource("/puzzle1/data.txt");
+        URL url = this.getClass().getResource("/2023/puzzle1/data.txt");
         String path = url.getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
         System.out.println("Part1: " + new Trebuchet().solve(input, false));
@@ -84,7 +84,7 @@ public class TrebuchetTest {
 
     @Test
     void testWithReplacement() throws IOException {
-        URL url = this.getClass().getResource("/puzzle1/data.txt");
+        URL url = this.getClass().getResource("/2023/puzzle1/data.txt");
         String path = url.getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
         System.out.println("Part2: " + new Trebuchet().solve(input, true));

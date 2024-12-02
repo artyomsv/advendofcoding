@@ -86,19 +86,4 @@ public abstract class Puzzle<T> {
         return characterArray;
     }
 
-    public static class Pair<T, E> {
-
-        final T t;
-        final E e;
-
-        public static <E, T> Pair<E, T> of(E e, T t) {
-            return new Pair<>(e, t);
-        }
-
-        private Pair(T t, E e) {
-            this.t = t;
-            this.e = e;
-        }
-    }
-
 }

@@ -20,12 +20,12 @@ class CosmicExpansionTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle11/short1.txt", 374, 1)
-                , Arguments.of("/puzzle11/short1.txt", 1030, 10)
-                , Arguments.of("/puzzle11/short1.txt", 8410, 100)
-                , Arguments.of("/puzzle11/short1.txt", 82000210, 1000000)
-                , Arguments.of("/puzzle11/data.txt", 10165598, 1)
-                , Arguments.of("/puzzle11/data.txt", 678728808158L, 1000000)
+                Arguments.of("/2023/puzzle11/short1.txt", 374, 1)
+                , Arguments.of("/2023/puzzle11/short1.txt", 1030, 10)
+                , Arguments.of("/2023/puzzle11/short1.txt", 8410, 100)
+                , Arguments.of("/2023/puzzle11/short1.txt", 82000210, 1000000)
+                , Arguments.of("/2023/puzzle11/data.txt", 10165598, 1)
+                , Arguments.of("/2023/puzzle11/data.txt", 678728808158L, 1000000)
 
         );
     }

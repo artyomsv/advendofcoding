@@ -17,10 +17,10 @@ class MirageMaintenanceTest {
 
     private static Stream<Arguments> games() {
         return Stream.of(
-                Arguments.of("/puzzle9/short.txt", 114L, true),
-                Arguments.of("/puzzle9/short.txt", 2L, false),
-                Arguments.of("/puzzle9/data.txt", 1581679977L, true),
-                Arguments.of("/puzzle9/data.txt", 889L, false)
+                Arguments.of("/2023/puzzle9/short.txt", 114L, true),
+                Arguments.of("/2023/puzzle9/short.txt", 2L, false),
+                Arguments.of("/2023/puzzle9/data.txt", 1581679977L, true),
+                Arguments.of("/2023/puzzle9/data.txt", 889L, false)
 
         );
     }

@@ -242,7 +242,7 @@ class GearRatiosTest {
 
     @Test
     void test() throws IOException {
-        URL url = GearRatiosTest.class.getResource("/puzzle3/data.txt");
+        URL url = GearRatiosTest.class.getResource("/2023/puzzle3/data.txt");
         String path = url.getFile();
         List<String> input = Files.readAllLines(new File(path).toPath());
         char[][] array = input.stream().map(String::toCharArray).toArray(char[][]::new);
