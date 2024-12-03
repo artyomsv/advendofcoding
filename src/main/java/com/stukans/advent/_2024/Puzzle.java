@@ -10,6 +10,11 @@ import java.util.logging.Logger;
 
 public abstract class Puzzle {
 
+    protected static final String ANSI_RED = "\u001B[31m";
+    protected static final String ANSI_RESET = "\u001B[0m";
+    protected static final String ANSI_GREEN = "\u001B[32m";
+    protected static final String ANSI_PURPLE = "\u001B[35m";
+
     protected final static Logger LOGGER = Logger.getLogger(Puzzle.class.getName());
 
     public Puzzle() {
