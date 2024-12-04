@@ -12,7 +12,7 @@ public class HistorianHysteria extends Puzzle {
     @Override
     public long solution1(File file) {
         Integer[][] numbers = asNumbers(file, 2);
-        Integer[][] rotate = rotate(numbers, Integer.class);
+        Integer[][] rotate = rotate90Clockwise(numbers, Integer.class);
 
         Integer[] array1 = Arrays.stream(rotate[0]).sorted().toArray(Integer[]::new);
         Integer[] array2 = Arrays.stream(rotate[1]).sorted().toArray(Integer[]::new);
@@ -32,7 +32,7 @@ public class HistorianHysteria extends Puzzle {
     @Override
     public long solution2(File file) {
         Integer[][] numbers = asNumbers(file, 2);
-        Integer[][] rotate = rotate(numbers, Integer.class);
+        Integer[][] rotate = rotate90Clockwise(numbers, Integer.class);
 
         Integer[] array1 = Arrays.stream(rotate[0]).sorted().toArray(Integer[]::new);
         Map<Integer, Long> map = Arrays.stream(rotate[1]).sorted().collect(Collectors.groupingBy(Integer::valueOf, Collectors.counting()));
