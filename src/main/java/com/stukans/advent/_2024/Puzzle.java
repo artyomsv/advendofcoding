@@ -54,6 +54,10 @@ public abstract class Puzzle {
 
     }
 
+    public void print(List<Integer> values) {
+        System.out.println(values);
+    }
+
     public char[] convert(Character[] array) {
         char[] result = new char[array.length];
         for (int i = 0; i < array.length; i++) {
