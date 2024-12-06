@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -17,6 +18,10 @@ public abstract class Puzzle {
     protected static final String ANSI_RESET = "\u001B[0m";
     protected static final String ANSI_GREEN = "\u001B[32m";
     protected static final String ANSI_PURPLE = "\u001B[35m";
+
+    private static final List<String> colours = List.of(
+            ANSI_RED, ANSI_GREEN, ANSI_PURPLE
+    );
 
     protected final static Logger LOGGER = Logger.getLogger(Puzzle.class.getName());
 
@@ -31,27 +36,39 @@ public abstract class Puzzle {
         return 0;
     }
 
-    public void print(char[][] array, Predicate<Character> predicate) {
+    public void print(char[][] array, Predicate<Character>... predicates) {
 
         System.out.print(" ");
-        for (int j = 0; j < array[0].length; j++) {
-            System.out.print(j);
+        for (int x = 0; x < array[0].length; x++) {
+            System.out.print(x);
         }
         System.out.println();
+        for (int y = 0; y < array.length; y++) {
+            System.out.print(y);
+            for (int x = 0; x < array[y].length; x++) {
+                char c = array[y][x];
 
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(i);
-            for (int j = 0; j < array[i].length; j++) {
-                char c = array[i][j];
-                if (predicate.test(c)) {
-                    System.out.printf("%s%c%s", ANSI_GREEN, c, ANSI_RESET);
-                } else {
+                if (predicates == null || predicates.length == 0) {
                     System.out.print(c);
+                } else {
+                    boolean handled = false;
+                    Iterator<String> iterator = colours.iterator();
+                    for (Predicate<Character> predicate : predicates) {
+                        String next = iterator.next();
+                        if (predicate.test(c)) {
+                            System.out.printf("%s%c%s", next, c, ANSI_RESET);
+                            handled = true;
+                            break;
+                        }
+                    }
+                    if (!handled) {
+                        System.out.print(c);
+                    }
                 }
             }
             System.out.println();
         }
-
+        System.out.println();
     }
 
     public void print(List<Integer> values) {
