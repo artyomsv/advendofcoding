@@ -3,7 +3,6 @@ package com.stukans.advent._2024.day6;
 import com.stukans.advent._2024.Coordinates;
 import com.stukans.advent._2024.Puzzle;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -61,15 +60,15 @@ class GuardGallivantTest {
     private static Stream<Arguments> inputs3() {
         return Stream.of(
                 Arguments.of(folder + "/test1.txt", Coordinates.of(4, 5), false)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(4, 4), false)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(4, 3), false)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(3, 6), true)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(2, 6), false)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(6, 7), true)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(7, 7), true)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(1, 8), true)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(3, 8), true)
-                ,Arguments.of(folder + "/test1.txt", Coordinates.of(7, 9), true)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(4, 4), false)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(4, 3), false)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(3, 6), true)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(2, 6), false)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(6, 7), true)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(7, 7), true)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(1, 8), true)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(3, 8), true)
+                , Arguments.of(folder + "/test1.txt", Coordinates.of(7, 9), true)
 //                , Arguments.of(folder + "/input.txt", -1)
 
         );
