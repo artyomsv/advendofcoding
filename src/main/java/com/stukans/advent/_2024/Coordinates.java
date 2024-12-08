@@ -28,6 +28,10 @@ public class Coordinates {
         return direction.nextCoordinates(this);
     }
 
+    public boolean isInside(int xMax, int yMax) {
+        return x >= 0 && y >= 0 && x < xMax && y < yMax;
+    }
+
     @Override
     public String toString() {
         return "[" + x + ":" + y + "]";
@@ -46,4 +50,5 @@ public class Coordinates {
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
 }
