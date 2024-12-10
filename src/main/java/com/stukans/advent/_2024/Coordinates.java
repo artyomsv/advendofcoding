@@ -32,6 +32,18 @@ public class Coordinates {
         return x >= 0 && y >= 0 && x < xMax && y < yMax;
     }
 
+    public <T> boolean isInside(T[][] array, Class<T> clazz) {
+        int yMax = array.length;
+        int xMax = array[0].length;
+        return x >= 0 && y >= 0 && x < xMax && y < yMax;
+    }
+
+    public boolean isInside(char[][] array) {
+        int yMax = array.length;
+        int xMax = array[0].length;
+        return x >= 0 && y >= 0 && x < xMax && y < yMax;
+    }
+
     @Override
     public String toString() {
         return "[" + x + ":" + y + "]";
@@ -51,4 +63,11 @@ public class Coordinates {
         return Objects.hash(x, y);
     }
 
+    public <T> T getValue(T[][] array, Class<T> clazz) {
+        return array[y][x];
+    }
+
+    public char getValue(char[][] arr) {
+        return arr[y][x];
+    }
 }
