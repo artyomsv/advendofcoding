@@ -249,5 +249,19 @@ public abstract class Puzzle {
         return Pair.of(i, j);
     }
 
+    protected <T> List<List<T>> chunkList(List<T> list, int chunkSize) {
+        List<List<T>> chunkedList = new ArrayList<>();
+        int listSize = list.size();
+
+        for (int i = 0; i < listSize; i += chunkSize) {
+            // Create a sublist from the original list
+            List<T> chunk = list.subList(i, Math.min(listSize, i + chunkSize));
+            // Add the sublist to the list of chunks
+            chunkedList.add(new ArrayList<>(chunk));
+        }
+
+        return chunkedList;
+    }
+
 
 }
