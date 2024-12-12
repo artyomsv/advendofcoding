@@ -4,7 +4,6 @@ import com.stukans.advent._2024.Puzzle;
 
 import java.io.File;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class CeresSearch extends Puzzle {
 
@@ -28,7 +27,7 @@ public class CeresSearch extends Puzzle {
 
         char[][] characters = asCharacters(file);
 
-        print(characters, character -> character == 'A');
+        printWithCharacterPredicates(characters, character -> character == 'A');
 
         for (int y = 1; y < characters.length - 1; y++) {
             for (int x = 1; x < characters[y].length - 1; x++) {

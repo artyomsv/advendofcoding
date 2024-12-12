@@ -6,8 +6,10 @@ import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -36,7 +38,42 @@ public abstract class Puzzle {
         return 0;
     }
 
-    public void print(char[][] array, Predicate<Character>... predicates) {
+    public void printWithCoordinatesPredicate(char[][] array, Predicate<Coordinates>... predicates) {
+
+        System.out.print(" ");
+        for (int x = 0; x < array[0].length; x++) {
+            System.out.print(x);
+        }
+        System.out.println();
+        for (int y = 0; y < array.length; y++) {
+            System.out.print(y);
+            for (int x = 0; x < array[y].length; x++) {
+                char c = array[y][x];
+
+                if (predicates == null || predicates.length == 0) {
+                    System.out.print(c);
+                } else {
+                    boolean handled = false;
+                    Iterator<String> iterator = colours.iterator();
+                    for (Predicate<Coordinates> predicate : predicates) {
+                        String next = iterator.next();
+                        if (predicate.test(Coordinates.of(x, y))) {
+                            System.out.printf("%s%c%s", next, c, ANSI_RESET);
+                            handled = true;
+                            break;
+                        }
+                    }
+                    if (!handled) {
+                        System.out.print(c);
+                    }
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public void printWithCharacterPredicates(char[][] array, Predicate<Character>... predicates) {
 
         System.out.print(" ");
         for (int x = 0; x < array[0].length; x++) {
@@ -261,6 +298,35 @@ public abstract class Puzzle {
         }
 
         return chunkedList;
+    }
+
+    protected Set<Coordinates> floodFill(Coordinates point, char[][] characters, char c, Direction from) {
+        return floodFill(point, characters, c, from, new HashSet<>());
+    }
+
+    private Set<Coordinates> floodFill(Coordinates point, char[][] characters, char c, Direction from, Set<Coordinates> visited) {
+        if (!point.isInside(characters) || !point.equals(characters, c) || visited.contains(point)) {
+            return visited;
+        }
+        visited.add(point);
+        Direction opposite = from.opposite();
+        if (opposite != Direction.NORTH) {
+            floodFill(point.move(Direction.NORTH), characters, c, Direction.NORTH, visited);
+        }
+        if (opposite != Direction.EAST) {
+            floodFill(point.move(Direction.EAST), characters, c, Direction.EAST, visited);
+        }
+
+        if (opposite != Direction.SOUTH) {
+            floodFill(point.move(Direction.SOUTH), characters, c, Direction.SOUTH, visited);
+        }
+
+        if (opposite != Direction.WEST) {
+            floodFill(point.move(Direction.WEST), characters, c, Direction.WEST, visited);
+        }
+
+        return visited;
+
     }
 
 

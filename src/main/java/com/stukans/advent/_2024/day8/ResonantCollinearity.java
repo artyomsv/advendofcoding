@@ -85,7 +85,7 @@ public class ResonantCollinearity extends Puzzle {
             }
         }
 
-        print(characters, character -> character == '#', character -> character == 'A', character -> character == '0');
+        printWithCharacterPredicates(characters, character -> character == '#', character -> character == 'A', character -> character == '0');
         return uniqueCoordinates.size();
     }
 
@@ -144,7 +144,7 @@ public class ResonantCollinearity extends Puzzle {
             }
         }
 
-        print(characters, character -> character == '#', character -> character == 'A', character -> character == '0');
+        printWithCharacterPredicates(characters, character -> character == '#', character -> character == 'A', character -> character == '0');
         return uniqueCoordinates.size();
     }
 
