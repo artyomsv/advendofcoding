@@ -18,8 +18,8 @@ public enum Direction {
         this.y = y;
     }
 
-    public Coordinates nextCoordinates(Coordinates coordinates) {
-        return Coordinates.of(coordinates.x() + x, coordinates.y() + y);
+    public Coordinate nextCoordinates(Coordinate coordinate) {
+        return Coordinate.of(coordinate.x() + x, coordinate.y() + y);
     }
 
     public Direction next() {

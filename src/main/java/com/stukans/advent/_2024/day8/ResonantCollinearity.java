@@ -1,6 +1,6 @@
 package com.stukans.advent._2024.day8;
 
-import com.stukans.advent._2024.Coordinates;
+import com.stukans.advent._2024.Coordinate;
 import com.stukans.advent._2024.Permutations;
 import com.stukans.advent._2024.Puzzle;
 
@@ -19,17 +19,17 @@ public class ResonantCollinearity extends Puzzle {
     public long solution1(File file) {
         char[][] characters = asCharacters(file);
 
-        Map<Character, List<Coordinates>> map = collectAntenasCoordinates(characters);
+        Map<Character, List<Coordinate>> map = collectAntenasCoordinates(characters);
 
-        Set<Coordinates> uniqueCoordinates = new HashSet<>();
+        Set<Coordinate> uniqueCoordinates = new HashSet<>();
 
-        for (Map.Entry<Character, List<Coordinates>> entry : map.entrySet()) {
-            List<Coordinates> coordinates = entry.getValue();
-            List<Set<Coordinates>> permutation = Permutations.permutationUnique(coordinates, 2, Coordinates.class);
-            for (Set<Coordinates> set : permutation) {
-                Iterator<Coordinates> iterator = set.iterator();
-                Coordinates firstAntena = iterator.next();
-                Coordinates secondAntena = iterator.next();
+        for (Map.Entry<Character, List<Coordinate>> entry : map.entrySet()) {
+            List<Coordinate> coordinates = entry.getValue();
+            List<Set<Coordinate>> permutation = Permutations.permutationUnique(coordinates, 2, Coordinate.class);
+            for (Set<Coordinate> set : permutation) {
+                Iterator<Coordinate> iterator = set.iterator();
+                Coordinate firstAntena = iterator.next();
+                Coordinate secondAntena = iterator.next();
                 if (iterator.hasNext()) {
                     throw new IllegalArgumentException("Expeted maximum 2 elements");
                 }
@@ -66,7 +66,7 @@ public class ResonantCollinearity extends Puzzle {
                 int yMax = characters[0].length;
                 int xMax = characters.length;
 
-                Coordinates firstAntinode = Coordinates.of(firstAntinodeX, firstAntinodeY);
+                Coordinate firstAntinode = Coordinate.of(firstAntinodeX, firstAntinodeY);
                 if (firstAntinode.isInside(xMax, yMax)) {
                     uniqueCoordinates.add(firstAntinode);
                     if (characters[firstAntinode.y()][firstAntinode.x()] == '.') {
@@ -75,7 +75,7 @@ public class ResonantCollinearity extends Puzzle {
                 }
 
 
-                Coordinates secondAntinode = Coordinates.of(secondAntinodeX, secondAntinodeY);
+                Coordinate secondAntinode = Coordinate.of(secondAntinodeX, secondAntinodeY);
                 if (secondAntinode.isInside(xMax, yMax)) {
                     uniqueCoordinates.add(secondAntinode);
                     if (characters[secondAntinode.y()][secondAntinode.x()] == '.') {
@@ -89,8 +89,8 @@ public class ResonantCollinearity extends Puzzle {
         return uniqueCoordinates.size();
     }
 
-    private Map<Character, List<Coordinates>> collectAntenasCoordinates(char[][] characters) {
-        Map<Character, List<Coordinates>> map = new HashMap<>();
+    private Map<Character, List<Coordinate>> collectAntenasCoordinates(char[][] characters) {
+        Map<Character, List<Coordinate>> map = new HashMap<>();
         for (int y = 0; y < characters.length; y++) {
             final int yC = y;
             for (int x = 0; x < characters[y].length; x++) {
@@ -104,7 +104,7 @@ public class ResonantCollinearity extends Puzzle {
                     if (coordinates == null) {
                         coordinates = new LinkedList<>();
                     }
-                    coordinates.add(Coordinates.of(xC, yC));
+                    coordinates.add(Coordinate.of(xC, yC));
                     return coordinates;
                 });
             }
@@ -116,21 +116,21 @@ public class ResonantCollinearity extends Puzzle {
     public long solution2(File file) {
         char[][] characters = asCharacters(file);
 
-        Map<Character, List<Coordinates>> map = collectAntenasCoordinates(characters);
+        Map<Character, List<Coordinate>> map = collectAntenasCoordinates(characters);
 
-        Set<Coordinates> uniqueCoordinates = new HashSet<>();
+        Set<Coordinate> uniqueCoordinates = new HashSet<>();
 
-        for (Map.Entry<Character, List<Coordinates>> entry : map.entrySet()) {
+        for (Map.Entry<Character, List<Coordinate>> entry : map.entrySet()) {
             Character key = entry.getKey();
             if (key == 'T') {
             }
-            List<Coordinates> coordinates = entry.getValue();
+            List<Coordinate> coordinates = entry.getValue();
             uniqueCoordinates.addAll(coordinates);
-            List<Set<Coordinates>> permutation = Permutations.permutationUnique(coordinates, 2, Coordinates.class);
-            for (Set<Coordinates> set : permutation) {
-                Iterator<Coordinates> iterator = set.iterator();
-                Coordinates firstAntena = iterator.next();
-                Coordinates secondAntena = iterator.next();
+            List<Set<Coordinate>> permutation = Permutations.permutationUnique(coordinates, 2, Coordinate.class);
+            for (Set<Coordinate> set : permutation) {
+                Iterator<Coordinate> iterator = set.iterator();
+                Coordinate firstAntena = iterator.next();
+                Coordinate secondAntena = iterator.next();
                 if (iterator.hasNext()) {
                     throw new IllegalArgumentException("Expeted maximum 2 elements");
                 }
@@ -148,7 +148,7 @@ public class ResonantCollinearity extends Puzzle {
         return uniqueCoordinates.size();
     }
 
-    private static Set<Coordinates> extracted(Coordinates firstAntena, Coordinates secondAntena, int xDistance, int yDistance, char[][] characters, Set<Coordinates> uniqueCoordinates) {
+    private static Set<Coordinate> extracted(Coordinate firstAntena, Coordinate secondAntena, int xDistance, int yDistance, char[][] characters, Set<Coordinate> uniqueCoordinates) {
         int yMax = characters[0].length;
         int xMax = characters.length;
         if (!firstAntena.isInside(yMax, characters.length) && !secondAntena.isInside(yMax, xMax)) {
@@ -181,7 +181,7 @@ public class ResonantCollinearity extends Puzzle {
             secondAntinodeY = secondAntena.y() - yDistance;
         }
 
-        Coordinates firstAntinode = Coordinates.of(firstAntinodeX, firstAntinodeY);
+        Coordinate firstAntinode = Coordinate.of(firstAntinodeX, firstAntinodeY);
         if (firstAntinode.isInside(xMax, yMax)) {
             uniqueCoordinates.add(firstAntinode);
             if (characters[firstAntinode.y()][firstAntinode.x()] == '.') {
@@ -190,7 +190,7 @@ public class ResonantCollinearity extends Puzzle {
         }
 
 
-        Coordinates secondAntinode = Coordinates.of(secondAntinodeX, secondAntinodeY);
+        Coordinate secondAntinode = Coordinate.of(secondAntinodeX, secondAntinodeY);
         if (secondAntinode.isInside(xMax, yMax)) {
             uniqueCoordinates.add(secondAntinode);
             if (characters[secondAntinode.y()][secondAntinode.x()] == '.') {

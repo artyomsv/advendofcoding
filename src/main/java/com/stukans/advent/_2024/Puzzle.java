@@ -38,7 +38,7 @@ public abstract class Puzzle {
         return 0;
     }
 
-    public void printWithCoordinatesPredicate(char[][] array, Predicate<Coordinates>... predicates) {
+    public void printWithCoordinatesPredicate(char[][] array, Predicate<Coordinate>... predicates) {
 
         System.out.print(" ");
         for (int x = 0; x < array[0].length; x++) {
@@ -55,9 +55,9 @@ public abstract class Puzzle {
                 } else {
                     boolean handled = false;
                     Iterator<String> iterator = colours.iterator();
-                    for (Predicate<Coordinates> predicate : predicates) {
+                    for (Predicate<Coordinate> predicate : predicates) {
                         String next = iterator.next();
-                        if (predicate.test(Coordinates.of(x, y))) {
+                        if (predicate.test(Coordinate.of(x, y))) {
                             System.out.printf("%s%c%s", next, c, ANSI_RESET);
                             handled = true;
                             break;
@@ -300,33 +300,70 @@ public abstract class Puzzle {
         return chunkedList;
     }
 
-    protected Set<Coordinates> floodFill(Coordinates point, char[][] characters, char c, Direction from) {
+    public int counter = 0;
+
+    protected Set<Coordinate> floodFill(Coordinate point, char[][] characters, char c, Direction from) {
         return floodFill(point, characters, c, from, new HashSet<>());
     }
 
-    private Set<Coordinates> floodFill(Coordinates point, char[][] characters, char c, Direction from, Set<Coordinates> visited) {
+    private Set<Coordinate> floodFill(Coordinate point, char[][] characters, char c, Direction from, Set<Coordinate> visited) {
+        counter++;
         if (!point.isInside(characters) || !point.equals(characters, c) || visited.contains(point)) {
             return visited;
         }
         visited.add(point);
         Direction opposite = from.opposite();
         if (opposite != Direction.NORTH) {
-            floodFill(point.move(Direction.NORTH), characters, c, Direction.NORTH, visited);
+            Coordinate move = point.move(Direction.NORTH);
+            if (!visited.contains(move)) {
+                floodFill(move, characters, c, Direction.NORTH, visited);
+            }
         }
         if (opposite != Direction.EAST) {
-            floodFill(point.move(Direction.EAST), characters, c, Direction.EAST, visited);
+            Coordinate move = point.move(Direction.EAST);
+            if (!visited.contains(move)) {
+                floodFill(move, characters, c, Direction.EAST, visited);
+            }
         }
 
         if (opposite != Direction.SOUTH) {
-            floodFill(point.move(Direction.SOUTH), characters, c, Direction.SOUTH, visited);
+            Coordinate move = point.move(Direction.SOUTH);
+            if (!visited.contains(move)) {
+                floodFill(move, characters, c, Direction.SOUTH, visited);
+            }
         }
 
         if (opposite != Direction.WEST) {
-            floodFill(point.move(Direction.WEST), characters, c, Direction.WEST, visited);
+            Coordinate move = point.move(Direction.WEST);
+            if (!visited.contains(move)) {
+                floodFill(move, characters, c, Direction.WEST, visited);
+            }
         }
 
         return visited;
+    }
 
+
+    //Greatest Common Divisor
+    protected long gcd(Long a, Long b) {
+        while (b > 0) {
+            long temp = b;
+            b = a % b; // % is remainder
+            a = temp;
+        }
+        return a;
+    }
+
+    //Least Common Multiple
+    protected long lcm(Long a, Long b) {
+        return a * (b / gcd(a, b));
+    }
+
+    //Least Common Multiple
+    protected long lcm(Long[] input) {
+        long result = input[0];
+        for (int i = 1; i < input.length; i++) result = lcm(result, input[i]);
+        return result;
     }
 
 

@@ -17,7 +17,8 @@ class PuzzleTest {
 
     @Test
     void rotate45Right() {
-        Puzzle puzzle = new Puzzle(){};
+        Puzzle puzzle = new Puzzle() {
+        };
 
         List<String> list = puzzle.rotate45Right(new char[][]{
                 "1234".toCharArray(),
@@ -43,7 +44,8 @@ class PuzzleTest {
 
     @Test
     void rotate45Left() {
-        Puzzle puzzle = new Puzzle(){};
+        Puzzle puzzle = new Puzzle() {
+        };
 
         char[][] array = {
                 "1234".toCharArray(),
@@ -69,5 +71,13 @@ class PuzzleTest {
                 list
         );
 
+    }
+
+    @Test
+    void lcm() {
+        Puzzle puzzle = new Puzzle() {
+        };
+
+        System.out.println(puzzle.lcm(94L, 34L));
     }
 }

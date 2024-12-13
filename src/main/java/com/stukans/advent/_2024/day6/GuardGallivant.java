@@ -1,6 +1,6 @@
 package com.stukans.advent._2024.day6;
 
-import com.stukans.advent._2024.Coordinates;
+import com.stukans.advent._2024.Coordinate;
 import com.stukans.advent._2024.Direction;
 import com.stukans.advent._2024.Pair;
 import com.stukans.advent._2024.Puzzle;
@@ -15,14 +15,14 @@ public class GuardGallivant extends Puzzle {
     @Override
     public long solution1(File file) {
         char[][] characters = asCharacters(file);
-        Coordinates coordinates = getStartingPoint(characters).orElseThrow(() -> new RuntimeException("No start point"));
+        Coordinate coordinate = getStartingPoint(characters).orElseThrow(() -> new RuntimeException("No start point"));
 
         long answer = 1;
         Direction direction = Direction.NORTH;
         do {
-            Coordinates nextCoordinates = coordinates.move(direction);
-            Integer x = nextCoordinates.x();
-            Integer y = nextCoordinates.y();
+            Coordinate nextCoordinate = coordinate.move(direction);
+            Integer x = nextCoordinate.x();
+            Integer y = nextCoordinate.y();
 
             if (x < 0 || x >= characters.length || y < 0 || y >= characters[0].length) {
                 break;
@@ -31,11 +31,11 @@ public class GuardGallivant extends Puzzle {
             if (characters[y][x] == '#') {
                 direction = direction.next();
             } else {
-                if (characters[coordinates.y()][coordinates.x()] != 'X') {
+                if (characters[coordinate.y()][coordinate.x()] != 'X') {
                     answer++;
-                    characters[coordinates.y()][coordinates.x()] = 'X';
+                    characters[coordinate.y()][coordinate.x()] = 'X';
                 }
-                coordinates = nextCoordinates;
+                coordinate = nextCoordinate;
                 //print(characters, character -> character == 'X', character -> character == '#');
             }
         } while (true);
@@ -46,16 +46,16 @@ public class GuardGallivant extends Puzzle {
     @Override
     public long solution2(File file) {
         char[][] characters = asCharacters(file);
-        Coordinates initial = getStartingPoint(characters).orElseThrow(() -> new RuntimeException("No start point"));
+        Coordinate initial = getStartingPoint(characters).orElseThrow(() -> new RuntimeException("No start point"));
 
         long answer = 0;
         Direction direction = Direction.NORTH;
-        Coordinates current = initial;
-        Set<Coordinates> foundLoopedObstructionCoordinates = new HashSet<>();
+        Coordinate current = initial;
+        Set<Coordinate> foundLoopedObstructionCoordinates = new HashSet<>();
         do {
-            Coordinates nextCoordinates = current.move(direction);
-            Integer x = nextCoordinates.x();
-            Integer y = nextCoordinates.y();
+            Coordinate nextCoordinate = current.move(direction);
+            Integer x = nextCoordinate.x();
+            Integer y = nextCoordinate.y();
 
             if (x < 0 || x >= characters.length || y < 0 || y >= characters[0].length) {
                 break;
@@ -64,11 +64,11 @@ public class GuardGallivant extends Puzzle {
             if (characters[y][x] == '#') {
                 direction = direction.next();
             } else {
-                if (!foundLoopedObstructionCoordinates.contains(nextCoordinates)) {
-                    boolean isLooped = isLooped(characters, initial, nextCoordinates);
+                if (!foundLoopedObstructionCoordinates.contains(nextCoordinate)) {
+                    boolean isLooped = isLooped(characters, initial, nextCoordinate);
                     if (isLooped) {
                         answer++;
-                        foundLoopedObstructionCoordinates.add(nextCoordinates);
+                        foundLoopedObstructionCoordinates.add(nextCoordinate);
                     }
                 }
 
@@ -76,7 +76,7 @@ public class GuardGallivant extends Puzzle {
 //                    answer++;
 //                    characters[current.y()][current.x()] = 'X';
 //                }
-                current = nextCoordinates;
+                current = nextCoordinate;
                 //print(characters, character -> character == 'X', character -> character == '#');
             }
         } while (true);
@@ -85,16 +85,16 @@ public class GuardGallivant extends Puzzle {
         return answer;
     }
 
-    public boolean isLooped(char[][] characters, final Coordinates initial, final Coordinates obstruction) {
+    public boolean isLooped(char[][] characters, final Coordinate initial, final Coordinate obstruction) {
         char buffer = characters[obstruction.y()][obstruction.x()];
         characters[obstruction.y()][obstruction.x()] = 'O';
-        Set<Pair<Coordinates, Direction>> visited = new HashSet<>();
+        Set<Pair<Coordinate, Direction>> visited = new HashSet<>();
         try {
             Direction direction = Direction.NORTH;
 
-            Coordinates current = initial;
+            Coordinate current = initial;
             do {
-                Pair<Coordinates, Direction> pair = Pair.of(current, direction);
+                Pair<Coordinate, Direction> pair = Pair.of(current, direction);
                 if (visited.contains(pair)) {
                     //print(characters, character -> character == 'O', character -> character == '#');
                     return true;
@@ -102,21 +102,21 @@ public class GuardGallivant extends Puzzle {
                     visited.add(pair);
                 }
 
-                Coordinates nextCoordinates = direction.nextCoordinates(current);
-                Integer x = nextCoordinates.x();
-                Integer y = nextCoordinates.y();
+                Coordinate nextCoordinate = direction.nextCoordinates(current);
+                Integer x = nextCoordinate.x();
+                Integer y = nextCoordinate.y();
 
                 if (x < 0 || x >= characters.length || y < 0 || y >= characters[0].length) {
                     return false;
                 }
 
-                if (characters[y][x] == '#' || (nextCoordinates.equals(obstruction))) {
+                if (characters[y][x] == '#' || (nextCoordinate.equals(obstruction))) {
                     direction = direction.next();
                 } else {
 //                    if (characters[current.y()][current.x()] != 'X') {
 //                        characters[current.y()][current.x()] = 'X';
 //                    }
-                    current = nextCoordinates;
+                    current = nextCoordinate;
                     //print(characters, character -> character == 'X', character -> character == '#');
                 }
 
@@ -128,11 +128,11 @@ public class GuardGallivant extends Puzzle {
 
     }
 
-    protected Optional<Coordinates> getStartingPoint(char[][] characters) {
+    protected Optional<Coordinate> getStartingPoint(char[][] characters) {
         for (int y = 0; y < characters.length; y++) {
             for (int x = 0; x < characters[y].length; x++) {
                 if (characters[y][x] == '^') {
-                    return Optional.of(Coordinates.of(x, y));
+                    return Optional.of(Coordinate.of(x, y));
                 }
             }
         }

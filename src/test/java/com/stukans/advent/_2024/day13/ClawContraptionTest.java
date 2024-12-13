@@ -1,4 +1,4 @@
-package com.stukans.advent._2024.day12;
+package com.stukans.advent._2024.day13;
 
 import com.stukans.advent._2024.Puzzle;
 import org.junit.jupiter.api.Assertions;
@@ -12,16 +12,14 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-class GardenGroupsTest {
+class ClawContraptionTest {
 
-    private static final String folder = "/2024/day12";
+    private static final String folder = "/2024/day13";
 
     private static Stream<Arguments> inputs1() {
         return Stream.of(
-                Arguments.of(folder + "/small.txt", 140)
-                , Arguments.of(folder + "/small2.txt", 772)
-                , Arguments.of(folder + "/test.txt", 1930)
-                , Arguments.of(folder + "/input.txt", 1489582)
+                Arguments.of(folder + "/test.txt", 480)
+                , Arguments.of(folder + "/input.txt", 29436)
 
         );
     }
@@ -33,18 +31,14 @@ class GardenGroupsTest {
         File file = new File(Objects.requireNonNull(url).getFile());
         Assertions.assertTrue(file.exists());
 
-        Puzzle puzzle = new GardenGroups();
+        Puzzle puzzle = new ClawContraption();
 
         Assertions.assertEquals(output, puzzle.solution1(file), "Solution 1 not correct");
     }
 
     private static Stream<Arguments> inputs2() {
         return Stream.of(
-                Arguments.of(folder + "/small.txt", 80)
-                , Arguments.of(folder + "/small2.txt", 436)
-                , Arguments.of(folder + "/small3.txt", 236)
-                , Arguments.of(folder + "/small4.txt", 368)
-                , Arguments.of(folder + "/test.txt", 1206)
+                Arguments.of(folder + "/test.txt", -1)
                 , Arguments.of(folder + "/input.txt", -1)
 
         );
@@ -57,7 +51,7 @@ class GardenGroupsTest {
         File file = new File(Objects.requireNonNull(url).getFile());
         Assertions.assertTrue(file.exists());
 
-        Puzzle puzzle = new GardenGroups();
+        Puzzle puzzle = new ClawContraption();
 
         Assertions.assertEquals(output2, puzzle.solution2(file), "Solution 2 not correct");
     }
