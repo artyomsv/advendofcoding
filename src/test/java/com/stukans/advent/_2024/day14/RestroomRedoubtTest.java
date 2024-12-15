@@ -1,4 +1,4 @@
-package com.stukans.advent._2024.day13;
+package com.stukans.advent._2024.day14;
 
 import com.stukans.advent._2024.Puzzle;
 import org.junit.jupiter.api.Assertions;
@@ -12,34 +12,33 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-class ClawContraptionTest {
+class RestroomRedoubtTest {
 
-    private static final String folder = "/2024/day13";
+    private static final String folder = "/2024/day14";
 
     private static Stream<Arguments> inputs1() {
         return Stream.of(
-                Arguments.of(folder + "/test.txt", 480)
-                , Arguments.of(folder + "/input.txt", 29436)
+                Arguments.of(folder + "/test.txt", 11, 7, 12)
+                , Arguments.of(folder + "/input.txt", 101, 103, 228457125)
 
         );
     }
 
     @ParameterizedTest
     @MethodSource("inputs1")
-    void puzzle1(String path, long output) throws IOException {
+    void puzzle1(String path, int xMax, int yMax, long output) throws IOException {
         URL url = this.getClass().getResource(path);
         File file = new File(Objects.requireNonNull(url).getFile());
         Assertions.assertTrue(file.exists());
 
-        Puzzle puzzle = new ClawContraption();
+        RestroomRedoubt puzzle = new RestroomRedoubt();
 
-        Assertions.assertEquals(output, puzzle.solution1(file), "Solution 1 not correct");
+        Assertions.assertEquals(output, puzzle.solution1(file, 100, xMax, yMax), "Solution 1 not correct");
     }
 
     private static Stream<Arguments> inputs2() {
         return Stream.of(
-                Arguments.of(folder + "/test.txt", 875318608908L)
-                , Arguments.of(folder + "/input.txt", 103729094227877L)
+                Arguments.of(folder + "/input.txt", 6493)
 
         );
     }
@@ -51,9 +50,10 @@ class ClawContraptionTest {
         File file = new File(Objects.requireNonNull(url).getFile());
         Assertions.assertTrue(file.exists());
 
-        Puzzle puzzle = new ClawContraption();
+        Puzzle puzzle = new RestroomRedoubt();
 
         Assertions.assertEquals(output2, puzzle.solution2(file), "Solution 2 not correct");
     }
+
 
 }

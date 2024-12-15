@@ -73,6 +73,41 @@ public abstract class Puzzle {
         System.out.println();
     }
 
+    public void printWithIntegerPredicates(int[][] array, Predicate<Integer>... predicates) {
+
+        System.out.print("    ");
+        for (int x = 0; x < array[0].length; x++) {
+            System.out.print(x);
+        }
+        System.out.println();
+        for (int y = 0; y < array.length; y++) {
+            System.out.printf("%3d ", y);
+            for (int x = 0; x < array[y].length; x++) {
+                int c = array[y][x];
+
+                if (predicates == null || predicates.length == 0) {
+                    System.out.print(c);
+                } else {
+                    boolean handled = false;
+                    Iterator<String> iterator = colours.iterator();
+                    for (Predicate<Integer> predicate : predicates) {
+                        String next = iterator.next();
+                        if (predicate.test(c)) {
+                            System.out.printf("%s%d%s", next, c, ANSI_RESET);
+                            handled = true;
+                            break;
+                        }
+                    }
+                    if (!handled) {
+                        System.out.print(c);
+                    }
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     public void printWithCharacterPredicates(char[][] array, Predicate<Character>... predicates) {
 
         System.out.print(" ");
