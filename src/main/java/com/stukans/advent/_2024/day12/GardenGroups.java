@@ -65,7 +65,7 @@ public class GardenGroups extends Puzzle {
                 border.addAll(neigbours);
             }
 
-            print(border, characters[0].length, characters.length);
+            //print(border, characters[0].length, characters.length);
 
             Set<Coordinate> visited = new HashSet<>();
             Set<Set<Coordinate>> lines = new HashSet<>();
@@ -76,7 +76,7 @@ public class GardenGroups extends Puzzle {
                 lines.add(ver);
 
             }
-            System.out.println();
+            //System.out.println();
         }
         //System.out.println("Found: " + gardens.size() + " gardens");
         return answer;

@@ -97,7 +97,7 @@ public class Coordinate {
         return Objects.hash(x, y);
     }
 
-    public void set(char[][] arr, char x) {
-        arr[y][x] = x;
+    public void set(char[][] arr, char value) {
+        arr[y][x] = value;
     }
 }
