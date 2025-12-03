@@ -251,6 +251,15 @@ public abstract class Puzzle {
         }
     }
 
+    public String[] load(final File file, String regex) {
+        try {
+            String s = Files.readString(file.toPath());
+            return s.split(regex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<String> rotate45Right(char[][] array) {
         int m = array.length;
         int n = array[0].length;

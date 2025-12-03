@@ -3,7 +3,7 @@ package com.stukans.advent._2025.day1;
 import com.stukans.advent._2025.NavigatableNode;
 import com.stukans.advent._2025.Node;
 
-public class SafeClockMechanism {
+class SafeClockMechanism {
 
     private Node<Long> value;
     private int zeroCount = 0;

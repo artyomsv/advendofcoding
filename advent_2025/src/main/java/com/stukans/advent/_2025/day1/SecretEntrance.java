@@ -1,11 +1,10 @@
 package com.stukans.advent._2025.day1;
 
-import com.stukans.advent._2025.Node;
 import com.stukans.advent._2025.Puzzle;
 
 import java.io.File;
 
-public class SecretEntrance extends Puzzle {
+class SecretEntrance extends Puzzle {
 
     @Override
     public long solution1(File file) {
