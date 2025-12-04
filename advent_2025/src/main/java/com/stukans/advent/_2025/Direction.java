@@ -1,25 +1,18 @@
 package com.stukans.advent._2025;
 
-import java.util.List;
-
 public enum Direction {
     NORTH(0, -1, '^'),
-    //    NORTH_EAST(1, -1),
+    NORTH_EAST(1, -1, '/'),
     EAST(1, 0, '>'),
-    //    SOUTH_EAST(1, 1),
+    SOUTH_EAST(1, 1, '\\'),
     SOUTH(0, 1, 'v'),
-    //    SOUTH_WEST(-1, 1),
-    WEST(-1, 0, '<');
-    //    NORTH_WEST(-1, -1);
+    SOUTH_WEST(-1, 1, '/'),
+    WEST(-1, 0, '<'),
+    NORTH_WEST(-1, -1, '\\');
 
     private final int x;
     private final int y;
     private final char arrow;
-
-    private static final List<Direction> WEST_FURTHER = List.of(WEST, SOUTH, NORTH);
-    private static final List<Direction> EAST_FURTHER = List.of(NORTH, SOUTH, EAST);
-    private static final List<Direction> SOUTH_FURTHER = List.of(WEST, EAST, SOUTH);
-    private static final List<Direction> NORTH_FURTHER = List.of(EAST, WEST, NORTH);
 
     Direction(int x, int y, char arrow) {
         this.x = x;
@@ -48,15 +41,6 @@ public enum Direction {
             case EAST -> WEST;
             case WEST -> EAST;
             default -> throw new IllegalStateException("Unexpected value: " + this);
-        };
-    }
-
-    public List<Direction> further() {
-        return switch (this) {
-            case NORTH -> NORTH_FURTHER;
-            case SOUTH -> SOUTH_FURTHER;
-            case EAST -> EAST_FURTHER;
-            case WEST -> WEST_FURTHER;
         };
     }
 

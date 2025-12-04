@@ -10,8 +10,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public abstract class Puzzle {
@@ -443,6 +445,26 @@ public abstract class Puzzle {
             }
         }
         return set;
+    }
+
+    protected void replace(char[][] array, Set<Coordinate> coordinates, Supplier<Character> supplier) {
+        for (int y = 0; y < array.length; y++) {
+            for (int x = 0; x < array[y].length; x++) {
+                if (coordinates.contains(Coordinate.of(x, y))) {
+                    array[y][x] = supplier.get();
+                }
+            }
+        }
+    }
+
+    protected <T> void replace(T[][] array, Set<Coordinate> coordinates, Supplier<T> supplier) {
+        for (int y = 0; y < array.length; y++) {
+            for (int x = 0; x < array[y].length; x++) {
+                if (coordinates.contains(Coordinate.of(x, y))) {
+                    array[y][x] = supplier.get();
+                }
+            }
+        }
     }
 
 

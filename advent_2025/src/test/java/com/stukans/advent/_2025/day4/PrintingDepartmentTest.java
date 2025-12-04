@@ -1,4 +1,4 @@
-package com.stukans.advent._2025.day3;
+package com.stukans.advent._2025.day4;
 
 import com.stukans.advent._2025.Puzzle;
 import org.junit.jupiter.api.Assertions;
@@ -12,14 +12,14 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-class LobbyTest {
+class PrintingDepartmentTest {
 
-    private static final String folder = "/2025/day3";
+    private static final String folder = "/2025/day4";
 
     private static Stream<Arguments> puzzle1() {
         return Stream.of(
-                Arguments.of(folder + "/test.txt", 357)
-                , Arguments.of(folder + "/input.txt", 17332)
+                Arguments.of(folder + "/test.txt", 13)
+                , Arguments.of(folder + "/input.txt", 1489)
 
         );
     }
@@ -27,19 +27,19 @@ class LobbyTest {
     @ParameterizedTest
     @MethodSource("puzzle1")
     void puzzle1(String path, long output) throws IOException {
-        URL url = Lobby.class.getResource(path);
+        URL url = PrintingDepartment.class.getResource(path);
         File file = new File(Objects.requireNonNull(url).getFile());
         Assertions.assertTrue(file.exists());
 
-        Puzzle puzzle = new Lobby();
+        Puzzle puzzle = new PrintingDepartment();
 
         Assertions.assertEquals(output, puzzle.solution1(file));
     }
 
     private static Stream<Arguments> puzzle2() {
         return Stream.of(
-                Arguments.of(folder + "/test.txt", 3121910778619L)
-                , Arguments.of(folder + "/input.txt", 172516781546707L)
+                Arguments.of(folder + "/test.txt", 43)
+                , Arguments.of(folder + "/input.txt", 8890)
 
         );
     }
@@ -47,12 +47,13 @@ class LobbyTest {
     @ParameterizedTest
     @MethodSource("puzzle2")
     void puzzle2(String path, long output) throws IOException {
-        URL url = Lobby.class.getResource(path);
+        URL url = PrintingDepartment.class.getResource(path);
         File file = new File(Objects.requireNonNull(url).getFile());
         Assertions.assertTrue(file.exists());
 
-        Puzzle puzzle = new Lobby();
+        Puzzle puzzle = new PrintingDepartment();
 
         Assertions.assertEquals(output, puzzle.solution2(file));
     }
+
 }
